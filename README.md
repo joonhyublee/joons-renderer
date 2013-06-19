@@ -1,6 +1,7 @@
 **joons-renderer** brings Sunflow's ray-tracing to Processing.
+(Joon Hyub Lee, joonhyub.lee@kaist.ac.kr).
 
-joons-renderer written by Joon Hyub Lee (joonhyub.lee@kaist.ac.kr).
+# License
 I wrote it for personal use, but thought I could share.
 Use & rewrite it as you want.
 When you upload whatever work you created with it,
