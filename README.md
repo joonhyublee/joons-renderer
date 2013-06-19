@@ -5,6 +5,6 @@ When you upload whatever work you created with it,
 please tag it #joonsrenderer, or acknowledge this library in any way.
 This will make me happy when I look them up,
 and help me keep my motivation to maintain the library :)
-The official project page is: https://github.com/joonhyublee/joons-renderer.
+The official project page is: http://github.com/joonhyublee/joons-renderer.
 Your contribution will be very much appreciated.
 Thanks!
