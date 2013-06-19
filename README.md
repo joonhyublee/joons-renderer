@@ -10,7 +10,7 @@
 ![Example](https://lh5.googleusercontent.com/-q5MHc8nmGZ4/UcG1pU1fuzI/AAAAAAAACmg/AgsVujT-zcU/w1000-h375-no/Sample.png)
 (1) Original Processing sketch, (2) Rendered using **joons-renderer**.
 
-Code as usual in [Processing](http://processing.org), and make small additions to your code to make a realistic render of it.  
+Code as usual in [Processing](http://processing.org), and make small additions to render it realistically.  
 The code can be as simple as:
 
     fill("shiny", R, G, B);
@@ -26,7 +26,7 @@ and returns the rendered image from the exact same viewpoint. It supports:
 
 ### License
 Use & modify as you want.  
-It's open-sourced, and your contribution will be much appreciated.  
+It's open-sourced, and your contribution will be appreciated.  
 Joon Hyub Lee, joonhyub.lee@kaist.ac.kr.
 
 ### Reference
