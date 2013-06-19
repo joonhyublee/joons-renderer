@@ -26,7 +26,7 @@ and returns the rendered image from the exact same viewpoint. It supports:
 
 ### License
 Use & modify as you want.  
-It's open-sourced, and your contribution will be appreciated.  
+The [source is hosted on GitHub](https://github.com/joonhyublee/joons-renderer), and your contribution will be appreciated.  
 Joon Hyub Lee, joonhyub.lee@kaist.ac.kr.
 
 ### Reference
