@@ -1,5 +1,6 @@
 ### joons-renderer brings Sunflow's ray-tracing to Processing.
-* **[Download, install & get your first render](https://github.com/joonhyublee/joons-renderer/wiki/Get-Started).**
+* [Download the Latest Version](https://github.com/joonhyublee/joons-renderer/wiki/Download).
+* [Install & get your first render](https://github.com/joonhyublee/joons-renderer/wiki/Get-Started).
 * [Detailed tutorial with examples](https://github.com/joonhyublee/joons-renderer/wiki/Tutorial).
 * [Example sketches](https://github.com/joonhyublee/joons-renderer/wiki/Example-Sketches).
 * [List of supported and unsupported functions](https://github.com/joonhyublee/joons-renderer/wiki/Supported-&-Unsupported-Functions).
