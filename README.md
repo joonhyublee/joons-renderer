@@ -35,4 +35,4 @@ Joon Hyub Lee, joonhyub.lee@kaist.ac.kr.
 * [Processing Source](https://github.com/processing/processing).
 * [Sunflow](http://sunflow.sourceforge.net/index.php?pg=gall).
 * [Sunflow Wiki](http://sfwiki.geneome.net/index.php5?title=Main_Page).
-* [Latest Build of Sunflow 0.07.3 by Monkstone](https://github.com/monkstone/sunflow).
+* [Sunflow 0.07.3 enhanced by Monkstone](https://github.com/monkstone/sunflow).
