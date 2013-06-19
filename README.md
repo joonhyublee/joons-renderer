@@ -1,9 +1,9 @@
 ### joons-renderer brings Sunflow's ray-tracing to Processing.
-* [Download the latest version](https://github.com/joonhyublee/joons-renderer/wiki/Download).
-* [Install & get your first render](https://github.com/joonhyublee/joons-renderer/wiki/Get-Started).
-* [Detailed tutorial with examples](https://github.com/joonhyublee/joons-renderer/wiki/Tutorial).
-* [Example sketches](https://github.com/joonhyublee/joons-renderer/wiki/Example-Sketches).
-* [List of supported and unsupported functions](https://github.com/joonhyublee/joons-renderer/wiki/Supported-&-Unsupported-Functions).
+* **[Download](https://github.com/joonhyublee/joons-renderer/wiki/Download)**
+* **[Get Started](https://github.com/joonhyublee/joons-renderer/wiki/Get-Started)**
+* **[Tutorial] (https://github.com/joonhyublee/joons-renderer/wiki/Tutorial)**
+* **[Supported and Unsupported Functions](https://github.com/joonhyublee/joons-renderer/wiki/Supported%20&%20Unsupported%20Functions)**
+* **[Example Sketches](https://github.com/joonhyublee/joons-renderer/wiki/Example-Sketches)**
 * Works of others using **joons-renderer** on [Tumblr](http://www.tumblr.com/tagged/joonsrenderer), [Flickr](http://www.flickr.com/search/?q=joons%20renderer), [YouTube](http://www.youtube.com/results?search_query=joonsrenderer), and [Vimeo](http://vimeo.com/search?q=joonsrenderer).
 * Animated examples, [depth-of-field enabled](http://www.youtube.com/watch?v=g9GZM1pmrl4) and [disabled](http://www.youtube.com/watch?v=06qPq-v1zZI).
 
