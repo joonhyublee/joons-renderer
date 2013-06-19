@@ -17,7 +17,7 @@ The code can be as simple as:
     fill("shiny", R, G, B);
     sphere(15);
 
-**joons-renderer** reads geometry from [Processing]((http://processing.org), applies [Sunflow](http://sunflow.sourceforge.net/index.php?pg=gall) ray-tracer engine to it,  
+**joons-renderer** reads geometry from [Processing](http://processing.org), applies [Sunflow](http://sunflow.sourceforge.net/index.php?pg=gall) ray-tracer engine to it,  
 and returns the rendered image from the exact same viewpoint. It supports:
 * _Texture_
 * _Light_
