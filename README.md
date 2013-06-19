@@ -13,7 +13,7 @@
 Code as usual in [Processing](http://processing.org), and make small additions to your code to make a  realistic render of it.  
 The code can be as simple as:
 
-    fill("mirror");
+    fill("shiny", R, G, B);
     sphere(15);
 
 **joons-renderer** reads geometry from Processing, applies [Sunflow](http://sunflow.sourceforge.net/index.php?pg=gall) ray-tracer engine to it,  
