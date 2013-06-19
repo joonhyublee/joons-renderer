@@ -8,7 +8,7 @@
 
 ### Features
 ![Example](https://lh5.googleusercontent.com/-q5MHc8nmGZ4/UcG1pU1fuzI/AAAAAAAACmg/AgsVujT-zcU/w1000-h375-no/Sample.png)
-(1) Original Processing sketch, (2) Rendered using **joons-renderer**.
+(1) Original [Processing](http://processing.org) sketch, (2) Rendered using **joons-renderer**.
 
 Code as usual in [Processing](http://processing.org), and make small additions to render it realistically.  
 The code can be as simple as:
@@ -16,7 +16,7 @@ The code can be as simple as:
     fill("shiny", R, G, B);
     sphere(15);
 
-**joons-renderer** reads geometry from Processing, applies [Sunflow](http://sunflow.sourceforge.net/index.php?pg=gall) ray-tracer engine to it,  
+**joons-renderer** reads geometry from [Processing]((http://processing.org), applies [Sunflow](http://sunflow.sourceforge.net/index.php?pg=gall) ray-tracer engine to it,  
 and returns the rendered image from the exact same viewpoint. It supports:
 * _Texture_
 * _Light_
