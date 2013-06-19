@@ -1,9 +1,9 @@
-### joons-renderer brings Sunflow's ray-tracing to Processing.
+### **joons-renderer** brings Sunflow's ray-tracing to Processing.
 (Joon Hyub Lee, joonhyub.lee@kaist.ac.kr)
 
 ### License
-Use & rewrite it as you want.  
-It's open sourced, and your contribution will be much appreciated.
+Use & modify as you want.  
+It's open-sourced, and your contribution will be much appreciated.
 
 ### Tutorial, Source
 * [Tutorials](https://github.com/joonhyublee/joons-renderer/wiki)
