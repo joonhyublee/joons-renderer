@@ -1,8 +1,8 @@
 ### joons-renderer brings Sunflow's ray-tracing to Processing.
-* [Download, install & Get your first render](Getting Started).
-* [Detailed tutorial with examples](Tutorial).
-* [Example sketches](Example Sketches).
-* [List of supported and unsupported functions](Supported-&-Unsupported-Functions).
+* [Download, install & get your first render](https://github.com/joonhyublee/joons-renderer/wiki/Get-Started).
+* [Detailed tutorial with examples](https://github.com/joonhyublee/joons-renderer/wiki/Tutorial).
+* [Example sketches](https://github.com/joonhyublee/joons-renderer/wiki/Example-Sketches).
+* [List of supported and unsupported functions](https://github.com/joonhyublee/joons-renderer/wiki/Supported-&-Unsupported-Functions).
 * Works of others using **joons-renderer** on [Tumblr](http://www.tumblr.com/tagged/joonsrenderer), [Flickr](http://www.flickr.com/search/?q=joons%20renderer), [YouTube](http://www.youtube.com/results?search_query=joonsrenderer), and [Vimeo](http://vimeo.com/search?q=joonsrenderer).
 * Animated examples, [depth-of-field enabled](http://www.youtube.com/watch?v=g9GZM1pmrl4) and [disabled](http://www.youtube.com/watch?v=06qPq-v1zZI).
 
@@ -22,7 +22,7 @@ and returns the rendered image from the exact same viewpoint. It supports:
 * _Light_
 * _Depth-of-field_
 
-.. and more. Check out the [full list of supported and unsupported functions](Supported-&-Unsupported-Functions).
+.. and more. Check out the [full list of supported and unsupported functions](https://github.com/joonhyublee/joons-renderer/wiki/Supported-&-Unsupported-Functions).
 
 ### License
 Use & modify as you want.  
