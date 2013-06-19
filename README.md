@@ -1,25 +1,5 @@
 ### joons-renderer brings Sunflow's ray-tracing to Processing.
-_Joon Hyub Lee, joonhyub.lee@kaist.ac.kr_
-
-### License
-Use & modify as you want.  
-It's open-sourced, and your contribution will be much appreciated.
-
-### Tutorial & Source
-* [Tutorial](https://github.com/joonhyublee/joons-renderer/wiki)
-* [Source](https://github.com/joonhyublee/joons-renderer)
-
-### Reference
-* [Processing](http://processing.org)
-* [Processing Reference](http://processing.org/reference/)
-* [Processing Source](https://github.com/processing/processing)
-* [Sunflow](http://sunflow.sourceforge.net/index.php?pg=gall)
-* [Sunflow Wiki](http://sfwiki.geneome.net/index.php5?title=Main_Page)
-* [Latest Build of Sunflow 0.07.3 by Monkstone](https://github.com/monkstone/sunflow)
-
-
-###joons-renderer brings Sunflow's ray-tracing to Processing.
-* [Download, installation & first render](Getting Started).
+* [Download, install & Get your first render](Getting Started).
 * [Detailed tutorial with examples](Tutorial).
 * [Example sketches](Example Sketches).
 * [List of supported and unsupported functions](Supported-&-Unsupported-Functions).
@@ -44,3 +24,15 @@ and returns the rendered image from the exact same viewpoint. It supports:
 
 .. and more. Check out the [full list of supported and unsupported functions](Supported-&-Unsupported-Functions).
 
+### License
+Use & modify as you want.  
+It's open-sourced, and your contribution will be much appreciated.  
+Joon Hyub Lee, joonhyub.lee@kaist.ac.kr.
+
+### Reference
+* [Processing](http://processing.org).
+* [Processing Reference](http://processing.org/reference/).
+* [Processing Source](https://github.com/processing/processing).
+* [Sunflow](http://sunflow.sourceforge.net/index.php?pg=gall).
+* [Sunflow Wiki](http://sfwiki.geneome.net/index.php5?title=Main_Page).
+* [Latest Build of Sunflow 0.07.3 by Monkstone](https://github.com/monkstone/sunflow).
