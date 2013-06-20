@@ -5,4 +5,4 @@ You need Sunflow 0.07.3 and Janino to run joons-renderer from source code. I use
 
 * For tutorial, documentation & examples, visit: https://github.com/joonhyublee/joons-renderer/wiki  
 * For joons-renderer source code, visit: https://github.com/joonhyublee/joons-renderer
-* For Monkstone's fork of Sunflow 0.07.3, visit: https://github.com/monkstone/sunflow
+* For Monkstone's version of Sunflow 0.07.3, visit: https://github.com/monkstone/sunflow
