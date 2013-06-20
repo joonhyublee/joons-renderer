@@ -6,3 +6,7 @@ You need Sunflow 0.07.3 and Janino to run joons-renderer from source code. I use
 * For tutorial, documentation & examples, visit: https://github.com/joonhyublee/joons-renderer/wiki  
 * For joons-renderer source code (git repository), visit: https://github.com/joonhyublee/joons-renderer
 * For Monkstone's version of Sunflow 0.07.3, visit: https://github.com/monkstone/sunflow
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/joonhyublee/joons-renderer/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
