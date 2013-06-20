@@ -1,4 +1,4 @@
-joons-renderer written by Joon Hyub Lee.
+_joons-renderer written by Joon Hyub Lee._
 
 Use & modify as you want. You need Sunflow 0.07.3 and Janino to run joons-renderer from the source code. I used Monkstone's version of Sunflow and Janino, and made them available as .jar files. Add them to your build path.
 
