@@ -302,23 +302,10 @@ public class JoonsRenderer{
 			if(buildSunflowRenderer()){
 				
 				//render using the created & built api
-				ImagePanel imagePanel = new ImagePanel();
+				JRImagePanel imagePanel = new JRImagePanel();
 				api.render(SunflowAPI.DEFAULT_OPTIONS, imagePanel);
-				imagePanel.save(P.sketchPath(RENDERED_FILE_NAME));
-				
-				//vertically flipping the image, because Processing's +y direction is down,
-				//whereas Sunflow's +y direction is up.
-				PImage imgBeforeInv = P.loadImage(P.sketchPath(RENDERED_FILE_NAME));
-				int w = imgBeforeInv.width;
-				int h = imgBeforeInv.height;
-				IMG_RENDERED_INV = new PImage(w, h);
-				for(int i=0; i<h; i++){
-					for(int j=0; j<w; j++){
-						IMG_RENDERED_INV.pixels[(h-i-1)*w+j] = imgBeforeInv.pixels[i*w+j]; //pixels[y*width+x]
-					}
-				}
-				IMG_RENDERED_INV.save(P.sketchPath(RENDERED_INV_FILE_NAME));
-				
+				IMG_RENDERED = imagePanel.getInversedImage();
+				IMG_RENDERED.save(P.sketchPath(RENDERED_INV_FILE_NAME));				
 				return true;
 			}
 		}
@@ -642,7 +629,7 @@ public class JoonsRenderer{
 			P.noLights();
 			P.camera();
 			P.perspective();
-			P.image(IMG_RENDERED_INV, 0, 0, P.width, P.height);
+			P.image(IMG_RENDERED, 0, 0, P.width, P.height);
 		}
 	}
 }

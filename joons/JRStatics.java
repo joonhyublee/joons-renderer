@@ -10,15 +10,14 @@ public class JRStatics {
 	//and also the default values for them.
 	
 	//sys constants
-	public static final String JR_VERSION = "v0.98b";
+	public static final String JR_VERSION = "v0.99";
 	public static final String UNRENDERED_FILE_NAME = "captured.png";
-	public static final String RENDERED_FILE_NAME = "rendered_uninv.png";
-	public static final String RENDERED_INV_FILE_NAME = "rendered_inv.png";
+	public static final String RENDERED_INV_FILE_NAME = "rendered.png";
 	
 	//sys variables, default unless modified 
 	public static PApplet P;
 	public static float FOV, ASPECT;
-	public static PImage IMG_RENDERED_INV;
+	public static PImage IMG_RENDERED;
 	public static ArrayList<JRFiller> fillers;
 	public static boolean FILLERS_ARE_VALID;
 	public static boolean CORNELL_BOX_IS_CALLED = false;
@@ -50,7 +49,7 @@ public class JRStatics {
 	public static int CAUSTICS_EMIT = 1000000;
 	public static int CAUSTICS_GATHER = 100;
 	public static float CAUSTICS_RADIUS = 0.5f;
-	public static int TRACE_DEPTH_DIFF = 1;
+	public static int TRACE_DEPTH_DIFF = 2;
 	public static int TRACE_DEPTH_REFL = 4;
 	public static int TRACE_DEPTH_REFR = 4;
 	public static float FOCUS_DISTANCE = -1; //uninitialized -1
@@ -84,7 +83,7 @@ public class JRStatics {
 	public static final float DEF_RGB = 255;
 	public static final float DEF_GLASS_ALPHA = 150;
 	public static final int DEF_SAMPLES = 16;
-	public static final float DEF_CORB_RADIANCE = 15;
+	public static final float DEF_CORB_RADIANCE = 20;
 	public static final float DEF_CORB_COLOR_1 = 220;
 	public static final float DEF_CORB_COLOR_2 = 130;
 	public static final float DEF_AMB_OCC_MAX_DIST = 50;
