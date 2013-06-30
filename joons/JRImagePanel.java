@@ -2,18 +2,8 @@ package joons;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.event.MouseInputAdapter;
 
 import org.sunflow.core.Display;
 import org.sunflow.image.Color;
@@ -31,160 +21,13 @@ public class JRImagePanel extends JPanel implements Display {
     private float w, h;
     private long repaintCounter;
 
-    private class ScrollZoomListener extends MouseInputAdapter {
-
-        int mx;
-        int my;
-        boolean dragging;
-        boolean zooming;
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            mx = e.getX();
-            my = e.getY();
-            switch (e.getButton()) {
-                case MouseEvent.BUTTON1:
-                    dragging = true;
-                    zooming = false;
-                    break;
-                case MouseEvent.BUTTON2: {
-                    dragging = zooming = false;
-                    // if CTRL is pressed
-                    if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
-                        fit();
-                    } else {
-                        reset();
-                    }
-                    break;
-                }
-                case MouseEvent.BUTTON3:
-                    zooming = true;
-                    dragging = false;
-                    break;
-                default:
-                    return;
-            }
-            repaint();
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            int mx2 = e.getX();
-            int my2 = e.getY();
-            if (dragging) {
-                drag(mx2 - mx, my2 - my);
-            }
-            if (zooming) {
-                zoom(mx2 - mx, my2 - my);
-            }
-            mx = mx2;
-            my = my2;
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // same behaviour
-            mouseDragged(e);
-        }
-
-        @Override
-        public void mouseWheelMoved(MouseWheelEvent e) {
-            zoom(-20 * e.getWheelRotation(), 0);
-        }
-    }
-
     public JRImagePanel() {
         setPreferredSize(new Dimension(640, 480));
         image = null;
         xo = yo = 0;
         w = h = 0;
-        ScrollZoomListener listener = new ScrollZoomListener();
-        addMouseListener(listener);
-        addMouseMotionListener(listener);
-        addMouseWheelListener(listener);
     }
-
-    public void save(String filename) {
-        try {
-                ImageIO.write(image, "png", new File(filename));
-        } catch (IOException ex) {
-            Logger.getLogger(JRImagePanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private synchronized void drag(int dx, int dy) {
-        xo += dx;
-        yo += dy;
-        repaint();
-    }
-
-    private synchronized void zoom(int dx, int dy) {
-        int a = Math.max(dx, dy);
-        int b = Math.min(dx, dy);
-        if (Math.abs(b) > Math.abs(a)) {
-            a = b;
-        }
-        if (a == 0) {
-            return;
-        }
-        // window center
-        float cx = getWidth() * 0.5f;
-        float cy = getHeight() * 0.5f;
-
-        // origin of the image in window space
-        float x = xo + (getWidth() - w) * 0.5f;
-        float y = yo + (getHeight() - h) * 0.5f;
-
-        // coordinates of the pixel we are over
-        float sx = cx - x;
-        float sy = cy - y;
-
-        // scale
-        if (w + a > 100) {
-            h = (w + a) * h / w;
-            sx = (w + a) * sx / w;
-            sy = (w + a) * sy / w;
-            w = (w + a);
-        }
-
-        // restore center pixel
-
-        float x2 = cx - sx;
-        float y2 = cy - sy;
-
-        xo = (x2 - (getWidth() - w) * 0.5f);
-        yo = (y2 - (getHeight() - h) * 0.5f);
-
-        repaint();
-    }
-
-    public synchronized void reset() {
-        xo = yo = 0;
-        if (image != null) {
-            w = image.getWidth();
-            h = image.getHeight();
-        }
-        repaint();
-    }
-
-    public synchronized void fit() {
-        xo = yo = 0;
-        if (image != null) {
-            float wx = Math.max(getWidth() - 10, 100);
-            float hx = wx * image.getHeight() / image.getWidth();
-            float hy = Math.max(getHeight() - 10, 100);
-            float wy = hy * image.getWidth() / image.getHeight();
-            if (hx > hy) {
-                w = wy;
-                h = hy;
-            } else {
-                w = wx;
-                h = hx;
-            }
-            repaint();
-        }
-    }
-
+    
     @Override
     public synchronized void imageBegin(int w, int h, int bucketSize) {
         if (image != null && w == image.getWidth() && h == image.getHeight()) {
@@ -239,8 +82,8 @@ public class JRImagePanel extends JPanel implements Display {
     @Override
     public synchronized void imageFill(int x, int y, int w, int h, Color c, float alpha) {
         int rgba = c.copy().mul(1.0f / alpha).toNonLinear().toRGBA(alpha);
-        for (int j = 0, index = 0; j < h; j++) {
-            for (int i = 0; i < w; i++, index++) {
+        for (int j = 0; j < h; j++) {
+            for (int i = 0; i < w; i++) {
                 image.setRGB(x + i, y + j, rgba);
             }
         }

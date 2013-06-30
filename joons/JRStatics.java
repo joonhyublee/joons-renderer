@@ -10,7 +10,7 @@ public class JRStatics {
 	//and also the default values for them.
 	
 	//sys constants
-	public static final String JR_VERSION = "v0.99";
+	public static final String JR_VERSION = "v1.01";
 	public static final String UNRENDERED_FILE_NAME = "captured.png";
 	public static final String RENDERED_INV_FILE_NAME = "rendered.png";
 	
@@ -54,8 +54,6 @@ public class JRStatics {
 	public static int TRACE_DEPTH_REFR = 4;
 	public static float FOCUS_DISTANCE = -1; //uninitialized -1
 	public static float LENS_RADIUS = 1f;
-	public static int LENS_SIDES = -1; //uninitialized -1
-	public static float LENS_ROTATION = -1; //uninitialized -1
 	
 	//sunflow GI instant variables
 	public static int GI_INSTANT_SAMPLES = 16;
@@ -116,7 +114,7 @@ public class JRStatics {
 			"Joons-Renderer : ERROR, Unknown sampler type. Use either \"ipr\" or \"bucket\" with setSampler() in setup().";
 	
 	public static final String IMAGE_AA_ERROR = 
-			"Joons-Renderer : ERROR, aaMax must be equal to or greater than aaMin. Both must be within -2 ~ +2.\n" +
+			"Joons-Renderer : ERROR, aaMax must be equal to or greater than aaMin.\n" +
 			"Joons-Renderer : Use setAA(int aaMin, int aaMax), or\n" +
 			"Joons-Renderer :     setAA(int aaMin, int aaMax, int aaSamples).";
 	
@@ -126,8 +124,7 @@ public class JRStatics {
 	
 	public static final String GI_AMB_OCC_ERROR = 
 			"Joons-Renderer : ERROR, background type \"gi_ambient_occlusion\" must have 0 or 8 parameters.\n" +
-			"Joons-Renderer : float brightR, float brightG, float brightB,\n" +
-			"Joons-Renderer : float darkR,   float darkG,   float darkB, float maximumDistance, int samples.";
+			"Joons-Renderer : float bright R, G, B, dark R, G, B, float maxDistance, int samples.";
 	
 	public static final String FILLER_UNKOWN_ERROR = 
 			"Joons-Renderer : ERROR, Unknown fill type.\n"+
@@ -136,45 +133,46 @@ public class JRStatics {
 	
 	public static final String FILLER_LIGHT_ERROR = 
 			"Joons-Renderer : ERROR, fill type \"light\" must have 0, 3 or 4 parameters.\n" + 
-			"Joons-Renderer : float radianceR, float radianceG, float radianceB, or\n"+
-			"Joons-Renderer : float radianceR, float radianceG, floar radianceB, samples.";
+			"Joons-Renderer : float radiance R, G, B, (3 params) +\n"+
+			"Joons-Renderer : int samples. (4 params)";
 	
 	public static final String FILLER_CONSTANT_ERROR = 
 			"Joons-Renderer : ERROR, fill type \"constant\" must have 0 or 3 parameters.\n" + 
-			"Joons-Renderer : float R, float G, float B.";
+			"Joons-Renderer : float R, G, B.";
 	
 	public static final String FILLER_DIFFUSE_ERROR = 
 			"Joons-Renderer : ERROR, fill type \"diffuse\" must have 0 or 3 parameters.\n" + 
-			"Joons-Renderer : float R, float G, float B.";
+			"Joons-Renderer : float R, G, B.";
 	
 	public static final String FILLER_SHINY_ERROR = 
 			"Joons-Renderer : ERROR, fill type \"shiny\" must have 0, 3 or 4 parameters.\n" + 
-			"Joons-Renderer : float R, float G, float B, or\n" +
-			"Joons-Renderer : float R, float G, float B, float shininess.";
+			"Joons-Renderer : float R, G, B, (3 params) +\n" +
+			"Joons-Renderer : float shininess. (4 params)";
 	
 	public static final String FILLER_MIRROR_ERROR = 
 			"Joons-Renderer : ERROR, fill type \"mirror\" must have 0 or 3 parameters.\n" + 
-			"Joons-Renderer : float R, float G, float B.";
+			"Joons-Renderer : float R, G, B.";
 	
 	public static final String FILLER_GLASS_ERROR =
 			"Joons-Renderer : ERROR, fill type \"glass\" must have 0, 3, 4 or 8 parameters.\n" +
-			"Joons-Renderer : float R, float G, float B, or\n" +
-			"Joons-Renderer : float R, float G, float B, float indexOfRefraction, or\n" +
-			"Joons-Renderer : float R, float G, float B, float indexOfRefraction, float absorptionDistance,\n" +
-			"Joons-Renderer : float absorptionR, float absorptionG, float absorptionB.";
+			"Joons-Renderer : float R, G, B, (3 params) +\n" +
+			"Joons-Renderer : float indexOfRefraction, (4 params) +\n" +
+			"Joons-Renderer : float absorptionDistance, float absorption R, G, B. (8 params)";
 	
 	public static final String FILLER_PHONG_ERROR =
 			"Joons-Renderer : ERROR, fill type \"phong\" must have 0, 3, 6 or 8 parameters.\n" +
-			"Joons-Renderer : float diffuseR,  float diffuseG,  float diffuseB, or\n" +
-			"Joons-Renderer : float diffuseR,  float diffuseG,  float diffuseB,\n" +
-			"Joons-Renderer : float specularR, float specularG, float specularB, or\n" +
-			"Joons-Renderer : float diffuseR,  float diffuseG,  float diffuseB,\n" + 
-			"Joons-Renderer : float specularR, float specularG, float specularB,\n" +
-			"Joons-Renderer : float specularityHardness, float reflectionBluriness.";
+			"Joons-Renderer : float diffuse R, G, B, (3 params) +\n" +
+			"Joons-Renderer : float specular R, G, B, (6 params) +\n" +
+			"Joons-Renderer : float specularityHardness, float reflectionBluriness. (8 params)";
 	
 	public static final String FILLER_AMB_OCC_ERROR = 
 			"Joons-Renderer : ERROR, fill type \"ambient_occlusion\" must have 0, 3 or 8 parameters.\n" +
-			"Joons-Renderer : float brightR, float brightG, float brightB, or\n" +
-			"Joons-Renderer : float brightR, float brightG, float brightB,\n" +
-			"Joons-Renderer : float darkR,   float darkG,   float darkB, float maximumDistance, float samples.";
+			"Joons-Renderer : float bright R, G, B, (3 params) +\n" +
+			"Joons-Renderer : float dark R, G, B, float maxDistance, int samples. (8 params)";
+	
+	public static final String CORNELL_BOX_ERROR =
+			"Joons-Renderer : ERROR, background type \"cornell_box\" must have 3, 7 or 21 parameters.\n" +
+			"Joons-Renderer : float width, height, depth, (3 params) +\n" +
+			"Joons-Renderer : float radiance R, G, B, int samples, (7 params) +\n" + 
+			"Joons-Renderer : float left R, G, B, right R, G, B, back R, G, B, top R, G, B, bottom R, G, B. (21 params)";
 }

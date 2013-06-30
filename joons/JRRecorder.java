@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import static joons.JRStatics.*;
 import processing.core.*;
 import processing.opengl.PGraphics3D;
-import processing.opengl.PGraphicsOpenGL;
 
 /*
  * The purpose of JRRecorder is to geometry used in P5 sketch, and reproduce them in sunflow.

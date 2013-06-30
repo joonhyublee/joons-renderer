@@ -5,7 +5,6 @@ import org.sunflow.SunflowAPI;
 import org.sunflow.math.Matrix4;
 import org.sunflow.math.Point3;
 import org.sunflow.math.Vector3;
-import org.sunflow.system.ImagePanel;
 
 import processing.core.*;
 import processing.opengl.PGraphicsOpenGL;
@@ -80,21 +79,11 @@ public class JoonsRenderer{
 		TRACE_DEPTH_REFR = refr;
 	}
 	
-	public void setDOF(float focusDistance){
-		FOCUS_DISTANCE = focusDistance;
-	}
-	
 	public void setDOF(float focusDistance, float lensRadius){
-		setDOF(focusDistance);
+		FOCUS_DISTANCE = focusDistance;
 		LENS_RADIUS = lensRadius; //larger the R, say 5, greater the DOF effect.
 	}
-	
-	public void setDOF(float focusDistance, float lensRadius, int lensSides, float lensRotation){
-		setDOF(focusDistance, lensRadius);
-		LENS_SIDES = lensSides;
-		LENS_ROTATION = lensRotation;		
-	}
-	
+
 	//background interface
 	public void background(float gray){
 		BG_R=gray/255f;
@@ -114,7 +103,7 @@ public class JoonsRenderer{
 		background(type, null);
 	}
 	
-	public void background(String type, float...params){			
+	public void background(String type, float...params){
 
 		//gi, instant
 		if(type==GI_INSTANT){
@@ -127,7 +116,7 @@ public class JoonsRenderer{
 				GI_INSTANT_C=params[2];
 				GI_INSTANT_BIAS_SAMPLES=(int) params[3];
 			} else {
-				PApplet.println(GI_INSTANT_ERROR);
+				if(rendering) PApplet.println(GI_INSTANT_ERROR);
 			}
 		}
 		
@@ -145,7 +134,27 @@ public class JoonsRenderer{
 				GI_AMB_OCC_MAX_DIST = params[6];
 				GI_AMB_OCC_SAMPLES = (int) params[7];
 			} else {
-				PApplet.println(GI_AMB_OCC_ERROR);
+				if(rendering) PApplet.println(GI_AMB_OCC_ERROR);
+			}
+		}
+		
+		//cornell box
+		if(type==CORNELL_BOX){
+			if(params != null){
+				if(params.length == 3) {
+					cornellBox(params[0], params[1], params[2]);
+				} else if(params.length == 7) {
+					cornellBox(params[0], params[1], params[2], params[3], params[4], params[5], (int) params[6]);
+				} else if(params.length == 21) {
+					cornellBox(params[0], params[1], params[2], params[3], params[4], params[5], (int) params[6],
+						params[7], params[8], params[9], params[10], params[11], params[12],
+						params[13], params[14], params[15], params[16], params[17], params[18],
+						params[19], params[20], params[21]);
+				} else {
+					if(rendering) PApplet.println(CORNELL_BOX_ERROR);
+				}
+			} else {
+				if(rendering) PApplet.println(CORNELL_BOX_ERROR);
 			}
 		}
 	}
@@ -160,11 +169,11 @@ public class JoonsRenderer{
 	}
 	
 	public void fill(String type, float...params){
-		if(type == CONSTANT || type == DIFFUSE || type == SHINY             || type == MIRROR || 
-		   type == GLASS 	|| type == PHONG   || type == AMBIENT_OCCLUSION || type == LIGHT){
+		if(type == CONSTANT || type == DIFFUSE || type == SHINY || type == MIRROR ||
+				type == GLASS || type == PHONG || type == AMBIENT_OCCLUSION || type == LIGHT){
 			fillers.add(new JRFiller(type, params));
 		} else {
-			PApplet.println(FILLER_UNKOWN_ERROR);
+			if(rendering) PApplet.println(FILLER_UNKOWN_ERROR);
 			FILLERS_ARE_VALID=false;
 		}
 
@@ -190,11 +199,11 @@ public class JoonsRenderer{
 	}
 	
 	//cornell box implementation
-	public void cornellBox(float width, float height, float depth){
+	private void cornellBox(float width, float height, float depth){
 		cornellBox(width, height, depth, DEF_CORB_RADIANCE, DEF_CORB_RADIANCE, DEF_CORB_RADIANCE, DEF_SAMPLES);
 	}
 	
-	public void cornellBox(float width, float height, float depth,
+	private void cornellBox(float width, float height, float depth,
 						   float radianceR,float radianceG, float radianceB, int samples){
 		cornellBox(	width, height, depth,
 					radianceR, radianceG, radianceB, samples,
@@ -203,7 +212,7 @@ public class JoonsRenderer{
 					DEF_CORB_COLOR_1, DEF_CORB_COLOR_1, DEF_CORB_COLOR_1); //default vaules
 	}
 	
-	public void cornellBox(	float width, float height, float depth, 
+	private void cornellBox(float width, float height, float depth, 
 							float radianceR, float radianceG, float radianceB, int samples,
 							float leftR, float leftG, float leftB, float rightR, float rightG, float rightB, 
 							float backR, float backG, float backB, float topR, float topG, float topB,
@@ -343,8 +352,7 @@ public class JoonsRenderer{
         api = SunflowAPI.compile(buildTemplate);
 	}
 
-	private boolean buildSunflowRenderer() {
-		
+	private boolean buildSunflowRenderer() {		
 		//image settings
 		api.parameter("resolutionX", (int) (P.width*SIZE_MULTIPLIER));
 		api.parameter("resolutionY", (int) (P.height*SIZE_MULTIPLIER));
@@ -379,8 +387,6 @@ public class JoonsRenderer{
 			//thin lens camera
 			api.parameter("focus.distance", FOCUS_DISTANCE);
 			api.parameter("lens.radius", LENS_RADIUS);
-			if(LENS_SIDES != -1) api.parameter("lens.sides", LENS_SIDES);
-			if(LENS_ROTATION != -1) api.parameter("lens.rotation", LENS_ROTATION);
 			api.camera("Camera_0", "thinlens");
 			api.parameter("camera", "Camera_0");
 			api.options(SunflowAPI.DEFAULT_OPTIONS);

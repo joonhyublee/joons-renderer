@@ -1,7 +1,9 @@
 
+
 import processing.core.PApplet;
 import joons.JoonsRenderer;
 
+@SuppressWarnings("serial")
 public class a_maintest extends PApplet {
 	
 	JoonsRenderer jr;
@@ -43,7 +45,7 @@ public class a_maintest extends PApplet {
 
 		pushMatrix();
 		translate(0, 0, -120);
-		jr.cornellBox(100, 100, 100); //cornellBox(width, height, depth);
+		jr.background("cornell_box", 100, 100, 100); //cornellBox(width, height, depth);
 		popMatrix();
 
 		pushMatrix();
