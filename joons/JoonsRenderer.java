@@ -64,7 +64,7 @@ public class JoonsRenderer{
 
 	public void setCaustics(int emitInMillions) {
 		CAUSTICS_EMIT = emitInMillions * 1000000; // just to make life easier.
-		CAUSTICS_GATHER = 50 + 10 * emitInMillions - 5; // rule of thumb
+		CAUSTICS_GATHER = 100 + 10 * (emitInMillions - 5); // rule of thumb
 	}
 
 	public void setCaustics(int emitInMillions, int gather, float radius) {
