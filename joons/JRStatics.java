@@ -10,7 +10,7 @@ public class JRStatics {
 	//and also the default values for them.
 	
 	//sys constants
-	public static final String JR_VERSION = "v1.01";
+	public static final String JR_VERSION = "v1.02";
 	public static final String UNRENDERED_FILE_NAME = "captured.png";
 	public static final String RENDERED_INV_FILE_NAME = "rendered.png";
 	
@@ -52,7 +52,7 @@ public class JRStatics {
 	public static int TRACE_DEPTH_DIFF = 2;
 	public static int TRACE_DEPTH_REFL = 4;
 	public static int TRACE_DEPTH_REFR = 4;
-	public static float FOCUS_DISTANCE = -1; //uninitialized -1
+	public static float FOCAL_DISTANCE = -1; //uninitialized -1
 	public static float LENS_RADIUS = 1f;
 	
 	//sunflow GI instant variables

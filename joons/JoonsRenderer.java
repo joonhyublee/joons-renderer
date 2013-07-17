@@ -44,12 +44,12 @@ public class JoonsRenderer{
 	}
 	
 	//image settings interface
-	public void setSizeMultiplier(double sizeMultiplier) {
-		SIZE_MULTIPLIER = sizeMultiplier;
+	public void setSizeMultiplier(double multiplier) {
+		SIZE_MULTIPLIER = multiplier;
 	}
 
-	public void setSampler(String renderType) {
-		SAMPLER = renderType;
+	public void setSampler(String sampler) {
+		SAMPLER = sampler;
 	}
 	
 	public void setAA(int aaMin, int aaMax) {
@@ -57,14 +57,17 @@ public class JoonsRenderer{
 		AA_MAX = aaMax;
 	}
 
-	public void setAA(int aaMin, int aaMax, int aaSamples) {
+	public void setAA(int aaMin, int aaMax, int AASamples) {
 		setAA(aaMin, aaMax);
-		AA_SAMPLES = aaSamples;
+		AA_SAMPLES = AASamples;
 	}
 
 	public void setCaustics(int emitInMillions) {
-		CAUSTICS_EMIT = emitInMillions * 1000000; // just to make life easier.
-		CAUSTICS_GATHER = 50 + 10 * emitInMillions - 5; // rule of thumb
+		setCaustics(emitInMillions, 50 + 10 * emitInMillions - 5, 0.5f); //rule of thumb
+	}
+	
+	public void setCaustics(int emitInMillions, int gather){
+		setCaustics(emitInMillions, gather, 0.5f); //rule of thumb
 	}
 
 	public void setCaustics(int emitInMillions, int gather, float radius) {
@@ -73,14 +76,14 @@ public class JoonsRenderer{
 		CAUSTICS_RADIUS = radius;
 	}
 
-	public void setTraceDepth(int diff, int refl, int refr) {
+	public void setTraceDepths(int diff, int refl, int refr) {
 		TRACE_DEPTH_DIFF = diff;
 		TRACE_DEPTH_REFL = refl;
 		TRACE_DEPTH_REFR = refr;
 	}
 	
-	public void setDOF(float focusDistance, float lensRadius){
-		FOCUS_DISTANCE = focusDistance;
+	public void setDOF(float focalDistance, float lensRadius){
+		FOCAL_DISTANCE = focalDistance;
 		LENS_RADIUS = lensRadius; //larger the R, say 5, greater the DOF effect.
 	}
 
@@ -377,7 +380,7 @@ public class JoonsRenderer{
 		api.parameter("aspect", ASPECT);
 		
 		//individual camera block
-		if(FOCUS_DISTANCE == -1){
+		if(FOCAL_DISTANCE == -1){
 			//pinhole camera
 			api.camera("Camera_0", "pinhole");
 			api.parameter("camera", "Camera_0");
@@ -385,7 +388,7 @@ public class JoonsRenderer{
 			
 		} else {			
 			//thin lens camera
-			api.parameter("focus.distance", FOCUS_DISTANCE);
+			api.parameter("focus.distance", FOCAL_DISTANCE);
 			api.parameter("lens.radius", LENS_RADIUS);
 			api.camera("Camera_0", "thinlens");
 			api.parameter("camera", "Camera_0");
