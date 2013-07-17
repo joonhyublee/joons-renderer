@@ -57,9 +57,9 @@ public class JoonsRenderer{
 		AA_MAX = aaMax;
 	}
 
-	public void setAA(int aaMin, int aaMax, int AASamples) {
+	public void setAA(int aaMin, int aaMax, int aaSamples) {
 		setAA(aaMin, aaMax);
-		AA_SAMPLES = AASamples;
+		AA_SAMPLES = aaSamples;
 	}
 
 	public void setCaustics(int emitInMillions) {
