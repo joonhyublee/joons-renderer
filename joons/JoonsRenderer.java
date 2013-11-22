@@ -148,7 +148,7 @@ public class JoonsRenderer{
 					cornellBox(params[0], params[1], params[2]);
 				} else if(params.length == 7) {
 					cornellBox(params[0], params[1], params[2], params[3], params[4], params[5], (int) params[6]);
-				} else if(params.length == 21) {
+				} else if(params.length == 22) {
 					cornellBox(params[0], params[1], params[2], params[3], params[4], params[5], (int) params[6],
 						params[7], params[8], params[9], params[10], params[11], params[12],
 						params[13], params[14], params[15], params[16], params[17], params[18],
