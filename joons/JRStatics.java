@@ -171,7 +171,7 @@ public class JRStatics {
 			"Joons-Renderer : float dark R, G, B, float maxDistance, int samples. (8 params)";
 	
 	public static final String CORNELL_BOX_ERROR =
-			"Joons-Renderer : ERROR, background type \"cornell_box\" must have 3, 7 or 21 parameters.\n" +
+			"Joons-Renderer : ERROR, background type \"cornell_box\" must have 3, 7 or 22 parameters.\n" +
 			"Joons-Renderer : float width, height, depth, (3 params) +\n" +
 			"Joons-Renderer : float radiance R, G, B, int samples, (7 params) +\n" + 
 			"Joons-Renderer : float left R, G, B, right R, G, B, back R, G, B, top R, G, B, bottom R, G, B. (21 params)";
