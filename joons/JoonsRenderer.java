@@ -92,14 +92,18 @@ public class JoonsRenderer{
 		BG_R=gray/255f;
 		BG_G=gray/255f;
 		BG_B=gray/255f;
-		P.background(gray);
+		if (!rendering){
+			P.background(gray);
+		}
 	}
 	
 	public void background(float r, float g, float b){
 		BG_R=r/255f;
 		BG_G=g/255f;
 		BG_B=b/255f;
-		P.background(r,g,b);
+		if (!rendering){
+			P.background(r,g,b);
+		}
 	}
 	
 	public void background(String type){
@@ -148,7 +152,7 @@ public class JoonsRenderer{
 					cornellBox(params[0], params[1], params[2]);
 				} else if(params.length == 7) {
 					cornellBox(params[0], params[1], params[2], params[3], params[4], params[5], (int) params[6]);
-				} else if(params.length == 21) {
+				} else if(params.length == 22) {
 					cornellBox(params[0], params[1], params[2], params[3], params[4], params[5], (int) params[6],
 						params[7], params[8], params[9], params[10], params[11], params[12],
 						params[13], params[14], params[15], params[16], params[17], params[18],
