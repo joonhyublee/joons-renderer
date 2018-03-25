@@ -17,9 +17,8 @@ float aspect = 4/3f;
 float zNear = 5;
 float zFar = 10000;
 
-ArrayList<PVector> points;
+ArrayList<PVector> points = new ArrayList<PVector>();
 PMatrix3D cam, modvwInv, screen2Model;
-PGraphics3D tex;
   
 void setup() {
   size(800, 600, P3D);
@@ -30,9 +29,6 @@ void setup() {
   jr.setCaustics(1); //Set caustics. 1 ~ 100. affects quality of light scattered through glass.
   //jr.setTraceDepth(1,4,4); //Set trace depth, (diffraction, reflection, refraction). Affects glass. (1,4,4) is good.
   //jr.setDOF(170, 5); //Set depth of field of camera, (focus distance, lens radius). Larger radius => more blurry.
-
-  points = new ArrayList<PVector>();
-  tex = (PGraphics3D) createGraphics(width, height, P3D);
 }
 
 void draw() {
@@ -126,15 +122,16 @@ void keyPressed() {
 }
 
 PVector getCamMousePos(float x, float y, float z) {
-  cam = tex.camera.get();
-  modvwInv = tex.modelviewInv.get();
+  cam = ((PGraphics3D) g).camera.get();
+  modvwInv = ((PGraphics3D) g).modelviewInv.get();
   screen2Model = modvwInv;
   screen2Model.apply(cam);
   float screen[] = {mouseX, mouseY, z};
   float model[] = new float[3];
   screen2Model.mult(screen, model);
   
-  PVector mouse = new PVector(model[0] + (x - width/2), model[1] + (y - height/2), model[2] * 100);
+  PVector mouse = new PVector((model[0]/2) + ((x/2) - width/4), (model[1]/2) + ((y/2) - height/4), model[2] * 100);
+  
   println(mouse);
   return mouse;
 }
