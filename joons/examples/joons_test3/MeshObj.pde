@@ -23,7 +23,8 @@ class MeshObjChild {
   ArrayList<PVector> points;
   color strokeColor;
   color fillColor;
-  boolean showStroke = false;
+  float strokeWeightVal = 0.05;
+  String material = "shiny";
   
   MeshObjChild(PShape _shape) {
     points = new ArrayList<PVector>();
@@ -46,12 +47,14 @@ class MeshObjChild {
   }
   
   void draw() {
-    if (showStroke) {
+    if (strokeWeightVal > 0.00001) {
+      strokeWeight(strokeWeightVal);
       stroke(strokeColor);
     } else {
       noStroke();
     }
-    fill(fillColor);
+    //fill(fillColor);
+    jr.fill(material, red(fillColor), green(fillColor), blue(fillColor));
     beginShape();
     for (int i=0; i<points.size(); i++) {
       PVector p = points.get(i);

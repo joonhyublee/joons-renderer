@@ -44,67 +44,23 @@ void draw() {
   pushMatrix();
   translate(0, 0, -120);
   strokeWeight(1);
+  stroke(0);
   jr.background("cornell_box", 100, 100, 100); //cornellBox(width, height, depth);
   popMatrix();
   
   pushMatrix();
   translate(-40, 20, -140);
-  pushMatrix();
-  rotateY(-PI/8);
-
-  //jr.fill("light"); or
-  //jr.fill("light", r, g, b); or
-  //jr.fill("light", r, g, b, int samples);
   jr.fill("light", 5, 5, 5);
-  sphere(13);
-  translate(27, 0, 0);
-
-  //jr.fill("mirror"); or
-  //jr.fill("mirror", r, g, b);    
-  jr.fill("mirror", 255, 255, 255);
-  sphere(13);
-  translate(27, 0, 0);
-
-  //jr.fill("diffuse"); or
-  //jr.fill("diffuse", r, g, b);
-  jr.fill("diffuse", 150, 255, 255);
-  sphere(13);
-  translate(27, 0, 0);
-
-  //jr.fill("shiny"); or
-  //jr.fill("shiny", r, g, b);  or
-  //jr.fill("shiny", r, g, b, shininess);  or
-  jr.fill("shiny", 150, 255, 255, 0.1f);
-  sphere(13);
-  translate(27, 0, 0);
+  sphere(20);
   popMatrix();
-  rotateY(PI/8);
-  translate(-10, -27, 30);
 
-  //jr.fill("ambient_occlusion"); or
-  //jr.fill("ambient_occlusion", bright r, bright g, bright b); or
-  //jr.fill("ambient occlusion", bright r, bright g, bright b, dark r, dark g, dark b, maximum distance, int samples);
-  jr.fill("ambient_occlusion", 150, 255, 255, 0, 0, 255, 50, 16);
-  sphere(13);
-  translate(27, 0, 0);
-
-  //jr.fill("phong", r, g, b);
-  jr.fill("phong", 150, 255, 255);
-  sphere(13);
-  translate(27, 0, 0);
-
-  //jr.fill("glass", r, g, b);
-  jr.fill("glass", 255, 255, 255);
-  sphere(13);
-  translate(27, 0, 0);
-
-  //jr.fill("constant", r, g, b);
-  jr.fill("constant", 150, 255, 255);
-  sphere(13);
+  pushMatrix();
+  translate(40, -20, -140);
+  jr.fill("light", 5, 5, 5);
+  sphere(20);
   popMatrix();
   
   pushMatrix();
-  strokeWeight(0.1);
   fill(127);
   jr.fill("glass", 150, 255, 255);
   translate(0, -10, -100);
