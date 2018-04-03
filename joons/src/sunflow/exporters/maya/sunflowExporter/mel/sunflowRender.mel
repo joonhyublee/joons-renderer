@@ -1,0 +1,14 @@
+global proc sunflowRender(int $width, int $height, int $doShadows, int $doGlowPass, string $camera, string $option){
+//	sunflowCheckGlobals;
+	sunflowExportCmd($width, $height, $doShadows, $doGlowPass, $camera, $option);
+}
+
+global proc sunflowIPRRender(int $width, int $height, int $doShadows, int $doGlowPass, string $camera, string $option){
+	print($width+"\n");
+	print($height+"\n");
+	print($doShadows+"\n");
+	print($doGlowPass+"\n");
+	print($camera+"\n");
+	print($option+"\n");
+	sunflowExportCmd($width, $height, $doShadows, $doGlowPass, $camera, $option);
+}

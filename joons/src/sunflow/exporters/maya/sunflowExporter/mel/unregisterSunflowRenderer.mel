@@ -1,0 +1,4 @@
+global proc unregisterSunflowRenderer(){
+	if ( `renderer -q -ex sunflow` ) renderer -unregisterRenderer sunflow;
+	updateRendererUI();
+}

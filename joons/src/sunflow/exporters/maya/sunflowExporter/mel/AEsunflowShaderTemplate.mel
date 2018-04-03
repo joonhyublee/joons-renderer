@@ -1,0 +1,130 @@
+global proc sunflowChangeShaderType( string $nodeName ){	
+	string $type = `getAttr ($nodeName+".shader")`;	
+	if($type==1){
+		editorTemplate -dc $nodeName "p_specular" false;
+		editorTemplate -dc $nodeName "p_power" false;
+		editorTemplate -dc $nodeName "p_samples" false;
+	}else{
+		editorTemplate -dc $nodeName "p_specular" true;
+		editorTemplate -dc $nodeName "p_power" true;
+		editorTemplate -dc $nodeName "p_samples" true;
+	}
+	
+	if($type==2){
+		editorTemplate -dc $nodeName "amb_dark" false;
+		editorTemplate -dc $nodeName "amb_samples" false;
+		editorTemplate -dc $nodeName "amb_maxdist" false;
+	}else{
+		editorTemplate -dc $nodeName "amb_dark" true;
+		editorTemplate -dc $nodeName "amb_samples" true;
+		editorTemplate -dc $nodeName "amb_maxdist" true;
+	}
+	
+	if($type==4){
+		editorTemplate -dc $nodeName "glass_eta" false;
+		editorTemplate -dc $nodeName "glass_adist" false;
+		editorTemplate -dc $nodeName "glass_acol" false;
+	}else{
+		editorTemplate -dc $nodeName "glass_eta" true;
+		editorTemplate -dc $nodeName "glass_adist" true;
+		editorTemplate -dc $nodeName "glass_acol" true;
+	}
+	
+	if($type==5){
+		editorTemplate -dc $nodeName "shiny_shiny" false;		
+	}else{
+		editorTemplate -dc $nodeName "shiny_shiny" true;		
+	}
+	
+	if($type==6){
+		editorTemplate -dc $nodeName "w_specular" false;
+		editorTemplate -dc $nodeName "w_upower" false;
+		editorTemplate -dc $nodeName "w_vpower" false;
+		editorTemplate -dc $nodeName "w_samples" false;
+	}else{
+		editorTemplate -dc $nodeName "w_specular" true;
+		editorTemplate -dc $nodeName "w_upower" true;
+		editorTemplate -dc $nodeName "w_vpower" true;
+		editorTemplate -dc $nodeName "w_samples" true;
+	}
+	
+	if($type==13){
+		editorTemplate -dc $nodeName "u_diff_texture" false;
+		editorTemplate -dc $nodeName "u_diff_blend" false;
+		editorTemplate -dc $nodeName "u_specular" false;
+		editorTemplate -dc $nodeName "u_spec_texture" false;
+		editorTemplate -dc $nodeName "u_spec_blend" false;
+		editorTemplate -dc $nodeName "u_gloss" false;
+		editorTemplate -dc $nodeName "u_samples" false;
+	}else{
+		editorTemplate -dc $nodeName "u_diff_texture" true;
+		editorTemplate -dc $nodeName "u_diff_blend" true;
+		editorTemplate -dc $nodeName "u_specular" true;
+		editorTemplate -dc $nodeName "u_spec_texture" true;
+		editorTemplate -dc $nodeName "u_spec_blend" true;
+		editorTemplate -dc $nodeName "u_gloss" true;
+		editorTemplate -dc $nodeName "u_samples" true;
+	}			
+}
+
+global proc AEsunflowShaderTemplate( string $nodeName )
+{
+	AEswatchDisplay $nodeName;
+	editorTemplate -beginScrollLayout;
+	editorTemplate -addControl "shader" "sunflowChangeShaderType";
+	editorTemplate -beginLayout "Diffuse Attributes" -collapse 1;
+		editorTemplate -l "Diffuse" -addControl "color";
+	editorTemplate -endLayout;
+	editorTemplate -beginLayout "Phong Attributes" -collapse 1;
+		editorTemplate -l "Diffuse" -addControl "color";
+		editorTemplate -l "Specular" -addControl "p_specular";
+		editorTemplate -l "Power" -addControl "p_power";
+		editorTemplate -l "Samples" -addControl "p_samples";
+	editorTemplate -endLayout;
+	editorTemplate -beginLayout "Amb-Occ Attributes" -collapse 1;		
+		editorTemplate -l "Bright" -addControl "color";
+		editorTemplate -l "Dark" -addControl "amb_dark";
+		editorTemplate -l "Samples" -addControl "amb_samples";
+		editorTemplate -l "Max Dist" -addControl "amb_maxdist";
+	editorTemplate -endLayout;
+	editorTemplate -beginLayout "Mirror Attributes" -collapse 1;		
+		editorTemplate -addControl "color";		
+	editorTemplate -endLayout;
+	editorTemplate -beginLayout "Glass Attributes" -collapse 1;		
+		editorTemplate -l "ETA" -addControl "glass_eta";
+		editorTemplate -l "Color" -addControl "color";
+		editorTemplate -l "Absorb Dist" -addControl "glass_adist";
+		editorTemplate -l "Absorb Color" -addControl "glass_acol";
+	editorTemplate -endLayout;
+	editorTemplate -beginLayout "Shiny Attributes" -collapse 1;		
+		editorTemplate -l "Color" -addControl "color";
+		editorTemplate -l "Reflection" -addControl "shiny_shiny";
+	editorTemplate -endLayout;
+	editorTemplate -beginLayout "Ward Attributes" -collapse 1;
+		editorTemplate -l "Diffuse" -addControl "color";
+		editorTemplate -l "Specular" -addControl "w_specular";
+		editorTemplate -l "U Power" -addControl "w_upower";
+		editorTemplate -l "V Power" -addControl "w_vpower";
+		editorTemplate -l "Samples" -addControl "w_samples";
+	editorTemplate -endLayout;
+	editorTemplate -beginLayout "Constant Attributes" -collapse 1;
+		editorTemplate -l "Color" -addControl "color";
+	editorTemplate -endLayout;
+	editorTemplate -beginLayout "Uber Attributes" -collapse 1;
+		editorTemplate -l "Diffuse" -addControl "color";
+		editorTemplate -l "Diffuse Texture" -addControl "u_diff_texture";
+		editorTemplate -l "Diffuse Blend" -addControl "u_diff_blend";
+		editorTemplate -l "Specular" -addControl "u_specular";
+		editorTemplate -l "Specular Texture" -addControl "u_spec_texture";
+		editorTemplate -l "Specular Blend" -addControl "u_spec_blend";
+		editorTemplate -l "Glossyness" -addControl "u_gloss";
+		editorTemplate -l "Samples" -addControl "u_samples";
+	editorTemplate -endLayout;
+	editorTemplate -l "Bump Mapping" -addControl "normalCamera";
+
+	// include/call base class/node attributes
+	AEdependNodeTemplate $nodeName;
+	
+	editorTemplate -addExtraControls;
+	editorTemplate -endScrollLayout;
+}

@@ -1,0 +1,14 @@
+global proc AEsunflowSkyNodeTemplate( string $nodeName )
+{
+	editorTemplate -beginScrollLayout;	
+		editorTemplate -beginLayout "Sky Attributes" -collapse 0;
+			editorTemplate -l "Turbidity" -addControl "Turbidity";
+		editorTemplate -endLayout;
+		editorTemplate -beginLayout "UI Attributes" -collapse 0;
+			editorTemplate -l "Size" -addControl "size";
+			editorTemplate -l "Quality" -addControl "resolution";
+			editorTemplate -l "Exposure" -addControl "Exposure";
+		editorTemplate -endLayout;
+	editorTemplate -addExtraControls;
+	editorTemplate -endScrollLayout;
+}

@@ -1,0 +1,20 @@
+global proc sunflowStartup(){	
+	string $mel_files[] = {    
+		"sunflowUtils.mel",
+		"createSunflowGlobalsTab.mel",
+		"updateSunflowGlobalsTab.mel",
+		"registerSunflowRenderer.mel",
+		"unregisterSunflowRenderer.mel",
+		"sunflowRender.mel",
+		"sunflowCreateMenu.mel",
+		"sunflowDeleteMenu.mel",
+		"sunflowShutdown.mel"
+	};
+	
+	int $i;
+	for ( $i = 0; $i < size($mel_files); $i++) {		
+		eval( "source \""+$mel_files[$i]+"\"" );
+	}
+	registerSunflowRenderer();
+	sunflowCreateMenu();
+}

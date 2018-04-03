@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Sunflow" default="release">
+	<!-- This needs to change with every release -->
+	<property name="sunflow.version" value="0.07.3" />
+	<property name="sunflow.jdk.level" value="1.6" />
+	<property name="sunflow.zip.comment" value="Sunflow rendering system v${sunflow.version}" />
+	<property name="sunflow.libs" value="janino.jar" />
+	<property name="sunflow.jar.filename" value="sunflow.jar" />
+
+	<!-- Basic targets -->
+	<target name="init">
+		<property name="src.dir" value="src" />
+		<property name="resources.dir" value="resources" />
+		<available file="${resources.dir}" type="dir" property="resources.present" />
+		<property name="build.dir" value="build" />
+		<property name="release.dir" value="release" />
+		<!-- build folder contains temporary files needed to create release level files -->
+		<property name="build.classes.dir" value="${build.dir}/classes" />
+		<property name="build.manifest" value="${build.dir}/sunflow.mf" />
+		<property name="build.jar" value="${build.dir}/sunflow.jar" />
+		<!-- release folder contains files which may be distributed in some way or another -->
+		<property name="release.javadoc.dir" value="${release.dir}/javadoc" />
+		<property name="release.src.zip" value="${release.dir}/sunflow-src-v${sunflow.version}.zip" />
+		<property name="release.bin.zip" value="${release.dir}/sunflow-bin-v${sunflow.version}.zip" />
+		<property name="release.data.zip" value="${release.dir}/sunflow-data-v${sunflow.version}.zip" />
+	</target>
+
+	<target name="clean" depends="init" description="Remove build files created this scripts">
+		<delete dir="${build.dir}" />
+		<delete dir="${release.dir}" />
+	</target>
+
+
+	<!-- build directory targets -->
+	<target name="compile" depends="init" description="Compile source">
+		<mkdir dir="${build.classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" source="${sunflow.jdk.level}" target="${sunflow.jdk.level}" classpath="${sunflow.libs}" includeantruntime="false">
+			<compilerarg value="-Xlint:unchecked" />
+		</javac>
+	</target>
+
+	<target name="create_manifest" description="Create the Sunflow jar manifest">
+		<echo file="${build.manifest}" append="false" message="Manifest-Version: 1.0${line.separator}Main-Class: SunflowGUI${line.separator}Class-Path: janino.jar${line.separator}" />
+	</target>
+
+	<target name="jars" depends="compile, create_manifest" if="resources.present" description="Create jar files required for execution">
+		<mkdir dir="${release.dir}" />
+		<jar jarfile="${release.dir}/${sunflow.jar.filename}" manifest="${build.manifest}">
+			<fileset dir="${build.classes.dir}" />
+			<fileset dir="." includes="${resources.dir}/*.png" />
+		</jar>
+		<copy todir="${release.dir}" file="${sunflow.libs}" />
+	</target>
+
+	<!-- release directory targets -->
+	<target name="zips" depends="jars" description="Create release zip files">
+		<mkdir dir="${release.dir}" />
+		<zip destfile="${release.bin.zip}" comment="${sunflow.zip.comment} - Binary release">
+			<zipfileset dir="${release.dir}" includes="*.jar" prefix="sunflow" />
+			<zipfileset dir="." includes="CHANGELOG" prefix="sunflow" />
+			<zipfileset dir="." includes="LICENSE" prefix="sunflow" />
+			<zipfileset dir="." includes="README" prefix="sunflow" />
+			<zipfileset dir="." includes="sunflow.bat" prefix="sunflow" />
+			<zipfileset dir="." includes="sunflow.sh" prefix="sunflow" />
+		</zip>
+		<zip destfile="${release.src.zip}" comment="${sunflow.zip.comment} - Source code release">
+			<zipfileset dir="exporters" prefix="sunflow/exporters" />
+			<zipfileset dir="resources" prefix="sunflow/resources" />
+			<zipfileset dir="build/classes" prefix="sunflow/classes" excludes="**/*.class **/org/**" />
+			<zipfileset dir="src" prefix="sunflow/src" />
+			<zipfileset dir="." includes="build.xml" prefix="sunflow" />
+			<zipfileset dir="." includes="${sunflow.libs}" prefix="sunflow" />
+			<zipfileset dir="." includes="CHANGELOG" prefix="sunflow" />
+			<zipfileset dir="." includes="LICENSE" prefix="sunflow" />
+			<zipfileset dir="." includes="README" prefix="sunflow" />
+		</zip>
+		<zip destfile="${release.data.zip}" comment="${sunflow.zip.comment} - Example data files">
+			<zipfileset dir="examples" prefix="sunflow/examples" />
+		</zip>
+	</target>
+
+	<target name="javadoc" depends="init" description="Generate documentation">
+		<mkdir dir="${release.javadoc.dir}" />
+		<javadoc classpath="${sunflow.libs}" destdir="${release.javadoc.dir}" access="protected" use="true" notree="false" nonavbar="false" noindex="false" splitindex="true" author="true" version="true" nodeprecatedlist="false" nodeprecated="false" sourcepath="${src.dir}" doctitle="Sunflow v${sunflow.version}">
+			<packageset dir="${src.dir}" defaultexcludes="yes">
+				<include name="**" />
+			</packageset>
+		</javadoc>
+	</target>
+
+	<target name="release" depends="zips, javadoc" />
+
+	<!-- Sample execution targets-->
+	<target name="generate_resources" depends="init, compile" unless="resources.present" description="Regerenates golden images for Benchmark">
+		<mkdir dir="${resources.dir}" />
+		<java classpath="${build.classes.dir}:${sunflow.libs}" classname="org.sunflow.Benchmark" maxmemory="1g" fork="true" jvmargs="-server">
+			<arg value="-regen" />
+		</java>
+	</target>
+
+	<target name="run" depends="jars" description="Run SunflowGUI">
+		<java jar="${release.dir}/${sunflow.jar.filename}" maxmemory="1g" fork="true">
+			<jvmarg value="-server" />
+		</java>
+	</target>
+
+	<target name="bench1" depends="jars" description="Run the Sunflow benchmark once">
+		<java classpath="${release.dir}/${sunflow.jar.filename}" classname="org.sunflow.Benchmark" maxmemory="1g" fork="true">
+			<jvmarg value="-server" />
+			<arg value="-bench" />
+			<arg value="0" />
+			<arg value="128" />
+		</java>
+	</target>
+
+	<target name="bench1uni" depends="jars" description="Run the sunflow Benchmark once (single threaded)">
+		<java classpath="${release.dir}/${sunflow.jar.filename}" classname="org.sunflow.Benchmark" maxmemory="1g" fork="true">
+			<jvmarg value="-server" />
+			<arg value="-bench" />
+			<arg value="1" />
+			<arg value="128" />
+		</java>
+	</target>
+</project>

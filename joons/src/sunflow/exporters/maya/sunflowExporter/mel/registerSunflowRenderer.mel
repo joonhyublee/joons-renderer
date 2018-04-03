@@ -1,0 +1,66 @@
+///////////////////////////////////////////////////////////////////////////////
+// Description: This procedure is called to register the 
+// 				sunflow renderer with other renderers in Maya.
+///////////////////////////////////////////////////////////////////////////////
+
+global proc registerSunflowRenderer()
+{
+    renderer
+		-rendererUIName					"Sunflow"
+		-renderProcedure				"sunflowRender"
+		-commandRenderProcedure			"sunflowRender"
+		-batchRenderProcedure			"sunflowRender"
+		-showRenderLogProcedure			""
+		-batchRenderOptionsProcedure	""
+		-cancelBatchRenderProcedure		"sunflowCancelBatch"
+		-showBatchRenderProcedure		""
+		-showBatchRenderLogProcedure	""
+		-iprRenderProcedure				""
+		-startIprRenderProcedure		""
+		-stopIprRenderProcedure			""
+		-changeIprRegionProcedure		""
+		-iprOptionsMenuLabel			""
+		-iprOptionsSubMenuProcedure		""
+		-renderDiagnosticsProcedure		""
+		-renderRegionProcedure			""
+		-textureBakingProcedure			""
+		-polyPrelightProcedure			""
+		-renderingEditorsSubMenuProcedure	""
+		-addGlobalsNode                     	"sunflowRenderGlobals"
+		-logoImageName                      	"sunflowRender.xpm"
+		-logoCallbackProcedure              	"sunflowLogoCallback"
+       sunflow;
+
+	//
+	//The first argument of the "-addGlobalsTab" flag is used in creating layout names
+	//and should not be localized.
+	//
+	
+	renderer
+		-edit
+		-addGlobalsTab 	"Common"
+				"createMayaSoftwareCommonGlobalsTab" 
+				"updateMayaSoftwareCommonGlobalsTab" 
+	sunflow;
+	renderer
+        -edit
+        -addGlobalsTab  "Sunflow"
+                        "createSunflowGlobalsTab"
+                        "updateSunflowGlobalsTab"
+        sunflow;
+}
+
+global proc sunflowLogoCallback(){
+	string $url = "http://sunflow.sourceforge.net/";
+	  evalDeferred ("showHelp -absolute \""+$url+"\"" );
+}
+
+global proc string renderSettingsTabLabel_melToUI (string $mel){
+	string $result = $mel;
+
+	if($mel == "Sunflow"){
+		$result = "Sunflow";
+	}
+	
+	return $result;
+}

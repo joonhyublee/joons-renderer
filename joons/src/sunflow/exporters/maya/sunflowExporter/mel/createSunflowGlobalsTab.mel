@@ -1,0 +1,698 @@
+//==================================================================
+// Sunflow Renderer Tab
+//==================================================================
+
+// Description: Utility procedure used by other procedures in this file.
+//		Must be used to account for multiple instances of the same tab.
+//
+
+global proc setParentToSunflowTab()
+{
+	// First set the parent to the correct tab layout.
+	// Account for the special "all renderers" master layer layout
+	// when we are using render layers
+	global string $gMasterLayerRendererName;
+	string $renderer = isDisplayingAllRendererTabs() ? $gMasterLayerRendererName : `currentRenderer`;
+	string $tabLayout = rendererTabLayoutName($renderer);
+	setParent $tabLayout;
+
+	// Now set the parent to the correct column layout
+	setParent sunflowTabColumn;
+}
+
+
+// updateMayaSunflowGlobalsUI
+//
+// Updates the Sunflow Render Globals UI based on changes in the vector format
+//
+global proc updateMayaSunflowGlobalsUI()
+{
+	string $sunflowGlobals = sunflowCheckGlobals();
+	string $prefix = sunflowGetPrefix();
+}
+
+
+
+// enableSunflowLayout
+//
+// This callback function can be called when a checkBoxGrp checkbox 
+// controls the enabled state of a layout.  
+//
+// Parameters:
+// $attrName        	- a string representing a boolean attribute 
+// $layoutAffected	- a string which is the name of the layout controlled by the passed attribute
+// $invert		- false if the attribute disables the layout when 
+//					  it is set to false; true if the attribute disables
+//					  the layout when it is set to true
+//
+global proc enableSunflowLayout(
+	string $attrName, 
+	string $layoutAffected, 
+	int    $invert) 
+{
+	string $oldParent = `setParent -query`;
+	setParentToSunflowTab();
+
+	// Get the value of the attribute.
+	int $state = `getAttr $attrName`;
+
+	if ( $invert ) {
+		$state = !$state;
+	}
+
+	// Disable/Enable the given layout based on the value.
+	layout -edit -enable $state $layoutAffected;
+
+	setParent $oldParent;
+}
+
+// initializeUI
+//
+// This function initilize the parts of UI which are 
+// created manually and which needs to be updated manually.
+//
+proc initializeUI() 
+{
+	string $prefix 		= sunflowGetPrefix();
+	string $sunflowGlobals	= sunflowCheckGlobals();
+}
+
+// createSunflowSamplingFrame
+//
+// Creates the sunflow sampling frame layout for the Sunflow tab of the Sunflow 
+// Render Globals
+//
+global proc createSunflowSamplingFrame( string $sunflowGlobals, string $parent )
+{
+	setUITemplate -pushTemplate attributeEditorTemplate;
+	setParentToSunflowTab();
+	setParent $parent;
+
+	string $prefix = sunflowGetPrefix();
+
+	columnLayout -adj true;
+
+		// Min Sampling Tolerance
+		attrFieldSliderGrp -min -3 -max 6 -label "Min Sampling" -attribute ($sunflowGlobals + ".minSamples");
+		// Max Sampling Tolerance
+		attrFieldSliderGrp -min -3 -max 6 -label "Max Sampling" -attribute ($sunflowGlobals + ".maxSamples");
+		// Pixel Filter -- this syncs with the enum attribute automatically
+		attrEnumOptionMenuGrp -label "Pixel Filter" -attribute ($sunflowGlobals + ".pixelFilter");
+
+	// end columnLayout
+	setParent ..;
+
+	setUITemplate -popTemplate;
+}
+
+/*
+// this is no longer needed - unless we add something to this frame later
+global proc updateSunflowSamplingFrameUI()
+{
+	string $oldParent = `setParent -query`;
+	setParentToSunflowTab();
+
+	string $prefix = sunflowGetPrefix();
+	string $sunflowGlobals = sunflowCheckGlobals();
+	string $menuName = ($prefix + "PixelFilter"); 
+
+	int $filter = `getAttr ($sunflowGlobals + ".pixelFilter")`;	
+
+	optionMenuGrp -edit -select ($filter+1) $menuName;
+
+	setParent $oldParent;
+}
+*/
+
+// createSunflowPhotonFrame
+//
+// Creates the sunflow photon frame layout for the Sunflow tab of the Sunflow 
+// Render Globals
+//
+global proc createSunflowPhotonFrame( string $sunflowGlobals, string $parent )
+{
+	setUITemplate -pushTemplate attributeEditorTemplate;
+	setParentToSunflowTab();
+	setParent $parent;
+
+	string $prefix = sunflowGetPrefix();
+
+	columnLayout -adj true;
+
+		// Enable Photons
+		attrControlGrp -label "Enable Photons" -attribute ($sunflowGlobals + ".enablePhotons") -cc "updateSunflowPhotonFrameUI";
+		
+		frameLayout -collapsable true -collapse 0 -bv false -lv false ($prefix+"PhotonAttributesFrame");
+			columnLayout -adj true;
+			// Photons
+			attrControlGrp -label "Photons" -attribute ($sunflowGlobals + ".Photons");
+			// Photons Kd
+			attrControlGrp -label "Photons Kd" -attribute ($sunflowGlobals + ".PhotonsKd");
+			// Photons Radius
+			attrControlGrp -label "Photons Radius" -attribute ($sunflowGlobals + ".PhotonsRadius");
+			setParent..;
+		setParent..;
+		
+	// end columnLayout
+	setParent ..;
+
+	setUITemplate -popTemplate;
+}
+
+global proc updateSunflowPhotonFrameUI()
+{
+	string $oldParent = `setParent -query`;
+	setParentToSunflowTab();
+
+	string $prefix = sunflowGetPrefix();
+	string $sunflowGlobals = sunflowCheckGlobals();
+	int $photonState = `getAttr ($sunflowGlobals + ".enablePhotons")`;
+
+	frameLayout -e -enable $photonState ($prefix+"PhotonAttributesFrame");
+
+	setParent $oldParent;
+}
+
+// createSunflowTraceFrame
+//
+// Creates the sunflow trace frame layout for the Sunflow tab of the Sunflow 
+// Render Globals
+//
+global proc createSunflowTraceFrame( string $sunflowGlobals, string $parent )
+{
+	setUITemplate -pushTemplate attributeEditorTemplate;
+	setParentToSunflowTab();
+	setParent $parent;
+
+	string $prefix = sunflowGetPrefix();
+
+	columnLayout -adj true;		
+		// Diffuse Dept
+		attrFieldSliderGrp -min 1 -max 10 -label "Diffuse" -attribute ($sunflowGlobals + ".diffuseDepth");
+		// Reflection Dept
+		attrFieldSliderGrp -min 1 -max 10 -label "Reflection" -attribute ($sunflowGlobals + ".reflectionDepth");
+		// Refraction Dept
+		attrFieldSliderGrp -min 1 -max 10 -label "Refraction" -attribute ($sunflowGlobals + ".refractionDepth");		
+	// end columnLayout
+	setParent ..;
+
+	setUITemplate -popTemplate;
+}
+
+
+// createSunflowGIFrame
+//
+// Creates the sunflow GI frame layout for the Sunflow tab of the Sunflow 
+// Render Globals
+//
+global proc createSunflowGIFrame( string $sunflowGlobals, string $parent )
+{
+	setUITemplate -pushTemplate attributeEditorTemplate;
+	setParentToSunflowTab();
+	setParent $parent;
+
+	string $prefix = sunflowGetPrefix();
+
+	columnLayout -adj true;
+
+		// Enable GI
+		attrControlGrp -label "Enable GI" -attribute ($sunflowGlobals + ".enableGI") -cc "updateSunflowGIFrameUI";
+
+		frameLayout -collapsable true -collapse 0 -bv false -lv false ($prefix+"GIAttributesFrame");
+			columnLayout -adj true;
+				// GI Mode
+				string $fullControlName = `optionMenuGrp -label "GI Mode"
+					-changeCommand "updateSunflowGIMode" ($prefix + "GIMode")`;
+					menuItem -label "Path Tracing";
+					menuItem -label "IGI";
+					menuItem -label "Irradiance Cache";
+				
+				frameLayout -l "Path Tracing" -collapsable true -collapse 0 -bv false -lv false ($prefix+"PTAttributesFrame");
+					columnLayout -adj true;
+					// PTSamples
+					attrControlGrp -label "Samples" -attribute ($sunflowGlobals + ".PTSamples");
+					setParent..;
+				setParent..;
+				
+				frameLayout -l "IGI" -collapsable true -collapse 0 -bv false -lv false ($prefix+"IGIAttributesFrame");
+					columnLayout -adj true;
+					// IGI Samples
+					attrControlGrp -label "Samples" -attribute ($sunflowGlobals + ".IGISamples");
+					// IGI Sets
+					attrControlGrp -label "Sets" -attribute ($sunflowGlobals + ".IGISets");
+					// IGI Bias
+					attrControlGrp -label "Bias" -attribute ($sunflowGlobals + ".IGIBias");
+					// IGI Bias Samples
+					attrControlGrp -label "Bias Samples" -attribute ($sunflowGlobals + ".IGIBSamples");					
+					setParent..;
+				setParent..;
+				
+				frameLayout -l "Irradiance Cache" -collapsable true -collapse 0 -bv false -lv false ($prefix+"ICAttributesFrame");
+					columnLayout -adj true;
+					// IC Samples
+					attrControlGrp -label "Samples" -attribute ($sunflowGlobals + ".ICSamples");
+					// IC Tolerance
+					attrControlGrp -label "Tolerance" -attribute ($sunflowGlobals + ".ICTolerance");
+					// IC Min Spacing
+					attrControlGrp -label "Min Spacing" -attribute ($sunflowGlobals + ".ICSpacingMin");
+					// IC Max Spacing
+					attrControlGrp -label "Max Spacing" -attribute ($sunflowGlobals + ".ICSpacingMax");					
+					setParent..;
+				setParent..;
+			
+			setParent..;
+		setParent..;
+
+	// end columnLayout
+	setParent ..;
+
+	setUITemplate -popTemplate;
+}
+
+global proc updateSunflowGIMode(){
+	string $prefix = sunflowGetPrefix();
+	string $sunflowGlobals = sunflowCheckGlobals();
+	// Get the current selection for the GI Mode.
+	string $menuName = ($prefix + "GIMode"); 
+	int    $selection = `optionMenuGrp -q -select $menuName`;
+	setAttr ($sunflowGlobals + ".GIMode") ($selection-1);
+	updateSunflowGIFrameUI();
+}
+
+global proc updateSunflowGIFrameUI()
+{
+	string $oldParent = `setParent -query`;
+	setParentToSunflowTab();
+
+	string $prefix = sunflowGetPrefix();
+	string $sunflowGlobals = sunflowCheckGlobals();
+	int $GIState = `getAttr ($sunflowGlobals + ".enableGI")`;
+	
+	frameLayout -e -vis $GIState ($prefix+"GIAttributesFrame");
+	
+	int $GIMode = `getAttr ($sunflowGlobals + ".GIMode")`;
+	
+	frameLayout -e -vis false ($prefix+"PTAttributesFrame");
+	frameLayout -e -vis false ($prefix+"IGIAttributesFrame");
+	frameLayout -e -vis false ($prefix+"ICAttributesFrame");
+	
+	if($GIMode==0)
+		frameLayout -e -vis true ($prefix+"PTAttributesFrame");
+	if($GIMode==1)
+		frameLayout -e -vis true ($prefix+"IGIAttributesFrame");
+	if($GIMode==2)
+		frameLayout -e -vis true ($prefix+"ICAttributesFrame");
+
+	setParent $oldParent;
+}
+
+// createSunflowEnvironmentFrame
+//
+// Creates the sunflow sky and sun frame layout for the Sunflow tab of the Sunflow 
+// Render Globals
+//
+global proc createSunflowEnvironmentFrame( string $sunflowGlobals, string $parent )
+{
+	setUITemplate -pushTemplate attributeEditorTemplate;
+	setParentToSunflowTab();
+	setParent $parent;
+
+	string $prefix = sunflowGetPrefix();
+
+	columnLayout -adj true;
+		columnLayout -adj true -cal "center";
+			button -l "Create Sun & Sky" -rs true -c ("createAndConnectSunSky "+$sunflowGlobals) ($prefix+"SunSkyButton");
+		setParent..;
+		frameLayout -collapsable true -collapse 0 -bv false -lv false -vis false ($prefix+"EnvironmentGroupFrame");
+			columnLayout;
+				frameLayout -l "Sky Attributes" -collapsable true -collapse 0 ($prefix+"EnvironmentSkyAttributesFrame");
+					columnLayout;
+						attrFieldSliderGrp -min 2 -max 15 -label "Turbidity" -attribute ($sunflowGlobals + ".skyTurbidity");
+						attrFieldSliderGrp -min 1 -max 2048 -label "Samples" -attribute ($sunflowGlobals + ".skySamples");
+					setParent..;
+				setParent..;		
+				frameLayout -l "Sky UI Attributes" -collapsable true -collapse 0 ($prefix+"EnvironmentSkyUIAttributesFrame");
+					columnLayout;
+						attrFieldSliderGrp -min 0 -max 200 -label "Sky Size" -attribute ($sunflowGlobals + ".skySize");
+						attrFieldSliderGrp -min 1 -max 6 -label "Resolution" -attribute ($sunflowGlobals + ".skyResolution");
+						attrFieldSliderGrp -min 0 -max 1 -label "Exposure" -attribute ($sunflowGlobals + ".skyExposure");
+					setParent..;
+				setParent..;
+			setParent..;
+		setParent..;
+	setParent ..;
+
+	setUITemplate -popTemplate;
+}
+
+global proc updateSunflowEnvironmentFrameUI()
+{
+	string $prefix = sunflowGetPrefix();
+	string $sunflowGlobals = sunflowCheckGlobals();
+	if (`connectionInfo -id ($sunflowGlobals + ".skyNode")`){
+		string $sky = `connectionInfo -sfd ($sunflowGlobals + ".skyNode")`;
+		string $skyNode = basenameEx($sky);		
+		connectAttr -f ($sunflowGlobals + ".skyTurbidity") ($skyNode+".turbidity");
+		connectAttr -f ($sunflowGlobals + ".skySize") ($skyNode+".size");
+		connectAttr -f ($sunflowGlobals + ".skyResolution") ($skyNode+".resolution");
+		connectAttr -f ($sunflowGlobals + ".skyExposure") ($skyNode+".exposure");
+		frameLayout -e -vis true ($prefix+"EnvironmentGroupFrame");
+		button -e -l "Delete Sun & Sky" -c ("deleteSunSky "+$sunflowGlobals) ($prefix+"SunSkyButton");
+	}else{		
+		frameLayout -e -vis false ($prefix+"EnvironmentGroupFrame");
+		button -e -l "Create Sun & Sky" -c ("createAndConnectSunSky "+$sunflowGlobals) ($prefix+"SunSkyButton");
+	}
+}
+
+global proc createAndConnectSunSky(string $sunflowGlobals){
+	string $prefix = sunflowGetPrefix();	
+	string $nodes[] = sunflowCreateSunSky();
+	connectAttr -f ($nodes[1]+".message") ($sunflowGlobals + ".skyNode");	
+	updateSunflowEnvironmentFrameUI;
+}
+
+global proc deleteSunSky(string $sunflowGlobals){
+	string $prefix = sunflowGetPrefix();
+	string $sunflowGlobals = sunflowCheckGlobals();
+	if (`connectionInfo -id ($sunflowGlobals + ".skyNode")`){
+		string $sky = `connectionInfo -sfd ($sunflowGlobals + ".skyNode")`;
+		disconnectAttr $sky ($sunflowGlobals + ".skyNode");
+		string $skyNode = basenameEx($sky);		
+		if (`connectionInfo -id ($skyNode + ".sunLight")`){
+			string $sun = `connectionInfo -sfd ($skyNode + ".sunLight")`;
+			string $sunNode = basenameEx($sun);
+			disconnectAttr $sun ($skyNode + ".sunLight");
+			delete `pickWalk -d up $sunNode`;
+		}
+		disconnectAttr ($sunflowGlobals + ".skyTurbidity") ($skyNode+".turbidity");
+		disconnectAttr ($sunflowGlobals + ".skySize") ($skyNode+".size");
+		disconnectAttr ($sunflowGlobals + ".skyResolution") ($skyNode+".resolution");
+		disconnectAttr ($sunflowGlobals + ".skyExposure") ($skyNode+".exposure");
+		delete `pickWalk -d up $skyNode`;		
+	}	
+	updateSunflowEnvironmentFrameUI;
+}
+
+
+// createSunflowOverrideFrame
+//
+// Creates the sunflow override frame layout for the Sunflow tab of the Sunflow 
+// Render Globals
+//
+global proc createSunflowOverrideFrame( string $sunflowGlobals, string $parent )
+{
+	setUITemplate -pushTemplate attributeEditorTemplate;
+	setParentToSunflowTab();
+	setParent $parent;
+
+	string $prefix = sunflowGetPrefix();
+
+	columnLayout -adj true;
+		// Material Override
+		string $fullControlName = `optionMenuGrp -label "Material Override"
+			-changeCommand "updateSunflowOverride" ($prefix + "MaterialOverride")`;
+			menuItem -label "none";
+			menuItem -label "ambocc";
+			menuItem -label "uvs";
+			menuItem -label "normals";
+			menuItem -label "id";
+			menuItem -label "prims";
+			menuItem -label "gray";
+			menuItem -label "wire";
+		frameLayout -collapsable true -collapse 0 -bv false -lv false ($prefix+"OverrideAttributesFrame");
+			columnLayout -adj true;
+				attrControlGrp -label "Max Distance" -attribute ($sunflowGlobals + ".ambOverrideDist");
+			setParent..;
+		setParent..;
+
+	// end columnLayout
+	setParent ..;
+
+	setUITemplate -popTemplate;
+}
+
+global proc updateSunflowOverride(){
+	string $prefix = sunflowGetPrefix();
+	string $sunflowGlobals = sunflowCheckGlobals();
+	// Get the current selection for the pixel filter.
+	string $menuName = ($prefix + "MaterialOverride");
+	int    $selection = `optionMenuGrp -q -select $menuName`;
+	setAttr ($sunflowGlobals + ".materialOverride") ($selection-1);
+	updateSunflowOverrideFrameUI();
+}
+
+global proc updateSunflowOverrideFrameUI()
+{
+	string $oldParent = `setParent -query`;
+	setParentToSunflowTab();
+
+	string $prefix = sunflowGetPrefix();
+	string $sunflowGlobals = sunflowCheckGlobals();
+	string $menuName = ($prefix + "MaterialOverride"); 
+
+	int $override = `getAttr ($sunflowGlobals + ".materialOverride")`;	
+
+	optionMenuGrp -edit -select ($override+1) $menuName;
+	
+	frameLayout -e -vis false ($prefix+"OverrideAttributesFrame");
+	if($override==1)
+		frameLayout -e -vis true ($prefix+"OverrideAttributesFrame");
+
+	setParent $oldParent;
+}
+
+// createSunflowBucketFrame
+//
+// Creates the sunflow bucket frame layout for the Sunflow tab of the Sunflow 
+// Render Globals
+//
+global proc createSunflowBucketFrame( string $sunflowGlobals, string $parent )
+{
+	setUITemplate -pushTemplate attributeEditorTemplate;
+	setParentToSunflowTab();
+	setParent $parent;
+
+	string $prefix = sunflowGetPrefix();
+
+	columnLayout -adj true;
+		// Material Override
+		string $fullControlName = `optionMenuGrp -label "Bucket Order"
+			-changeCommand "updateSunflowBucket" ($prefix + "BucketOrder")`;
+			menuItem -label "hilbert";
+			menuItem -label "spiral";
+			menuItem -label "column";
+			menuItem -label "row";
+			menuItem -label "diagonal";
+			menuItem -label "random";
+						
+		attrFieldSliderGrp -min -4 -max 512 -label "Size" -attribute ($sunflowGlobals + ".bucketSize");
+		attrControlGrp -label "Reverse" -attribute ($sunflowGlobals + ".bucketReverse");	
+
+	// end columnLayout
+	setParent ..;
+
+	setUITemplate -popTemplate;
+}
+
+global proc updateSunflowBucket(){
+	string $prefix = sunflowGetPrefix();
+	string $sunflowGlobals = sunflowCheckGlobals();
+	// Get the current selection for the bucket order.
+	string $menuName = ($prefix + "BucketOrder");
+	int    $selection = `optionMenuGrp -q -select $menuName`;
+	setAttr ($sunflowGlobals + ".bucketOrder") ($selection-1);
+	updateSunflowBucketFrameUI();
+}
+
+global proc updateSunflowBucketFrameUI()
+{
+	string $oldParent = `setParent -query`;
+	setParentToSunflowTab();
+
+	string $prefix = sunflowGetPrefix();
+	string $sunflowGlobals = sunflowCheckGlobals();
+	string $menuName = ($prefix + "BucketOrder"); 
+
+	int $override = `getAttr ($sunflowGlobals + ".bucketOrder")`;	
+
+	optionMenuGrp -edit -select ($override+1) $menuName;
+
+	setParent $oldParent;
+}
+
+// createSunflowSystemFrame
+//
+// Creates the sunflow override frame layout for the Sunflow tab of the Sunflow 
+// Render Globals
+//
+global proc createSunflowSystemFrame( string $sunflowGlobals, string $parent )
+{
+	setUITemplate -pushTemplate attributeEditorTemplate;
+	setParentToSunflowTab();
+	setParent $parent;
+
+	string $prefix = sunflowGetPrefix();
+
+	columnLayout -adj true;
+		textFieldButtonGrp -label "Export Path" -text "" -buttonLabel "..." -bc "fileBrowserDialog -m 4 -fc \"sunflowSetExportPath\" -ft \"directory\" -an \"Select\";" ($prefix+"ExportPath");
+			
+	// end columnLayout
+	setParent ..;
+
+	setUITemplate -popTemplate;
+}
+
+global proc int sunflowSetExportPath( string $dirName, string $fileType )
+{
+	string $sunflowGlobals = sunflowCheckGlobals();	
+	setAttr -type "string" ($sunflowGlobals+".exportPath") $dirName;
+	updateSunflowSystemFrameUI();
+	return 1;
+}
+
+global proc updateSunflowSystemFrameUI()
+{
+	string $oldParent = `setParent -query`;
+	setParentToSunflowTab();
+
+	string $prefix = sunflowGetPrefix();
+	string $sunflowGlobals = sunflowCheckGlobals();	
+
+	string $exportPath = `getAttr ($sunflowGlobals + ".exportPath")`;
+
+	textFieldButtonGrp -e -text $exportPath ($prefix+"ExportPath");
+	
+	setParent $oldParent;
+}
+
+
+// createSunflowGlobalsTab
+//
+// Creates the Sunflow tab of the Sunflow Render Globals
+//
+global proc createSunflowGlobalsTab()
+{
+	string $prefix = sunflowGetPrefix();
+
+	// Create the render globals node.
+	string $sunflowGlobals = sunflowCheckGlobals();
+
+	string $parentForm = `setParent -query`;
+	setParent $parentForm;
+
+	scrollLayout -horizontalScrollBarThickness 0 sunflowGlobalsTab;
+		columnLayout -adjustableColumn true sunflowTabColumn;
+			
+			// renderMode
+			attrControlGrp -label "Render Mode" -attribute ($sunflowGlobals + ".renderMode");
+			
+			// Sampling options
+			frameLayout -label "Sampling"
+				-collapsable  true 
+				-collapse 0
+				-mh 5
+				sunflowSamplingFrame;
+
+				createSunflowSamplingFrame( $sunflowGlobals, "sunflowSamplingFrame"); 
+
+			setParent ..;
+			
+			// Photon options
+			frameLayout -label "Photons"
+				-collapsable  true 
+				-collapse 0
+				-mh 5
+				sunflowPhotonFrame;
+
+				createSunflowPhotonFrame( $sunflowGlobals, "sunflowPhotonFrame");
+				updateSunflowPhotonFrameUI();
+
+			setParent ..;
+			
+			// Trace Depth options
+			frameLayout -label "Trace Depths"
+				-collapsable  true 
+				-collapse 0
+				-mh 5
+				sunflowTraceFrame;
+
+				createSunflowTraceFrame( $sunflowGlobals, "sunflowTraceFrame");				
+
+			setParent ..;
+			
+			// GI options
+			frameLayout -label "Global Illumination"
+				-collapsable  true 
+				-collapse 0
+				-mh 5
+				sunflowGIFrame;
+
+				createSunflowGIFrame( $sunflowGlobals, "sunflowGIFrame");
+				updateSunflowGIFrameUI();
+
+			setParent ..;
+			
+			// Environment options
+			frameLayout -label "Environment"
+				-collapsable  true 
+				-collapse 0
+				-mh 5
+				-mw 10
+				sunflowEnvironmentFrame;
+
+				createSunflowEnvironmentFrame( $sunflowGlobals, "sunflowEnvironmentFrame");				
+
+			setParent ..;
+			
+			// Material Override options
+			frameLayout -label "Material Override"
+				-collapsable  true 
+				-collapse 0
+				-mh 5
+				sunflowOverrideFrame;
+
+				createSunflowOverrideFrame( $sunflowGlobals, "sunflowOverrideFrame");
+				updateSunflowOverrideFrameUI();
+
+			setParent ..;
+			
+			// Bucket options
+			frameLayout -label "Bucket"
+				-collapsable  true 
+				-collapse 0
+				-mh 5
+				sunflowBucketFrame;
+
+				createSunflowBucketFrame( $sunflowGlobals, "sunflowBucketFrame");
+				updateSunflowBucketFrameUI();
+
+			setParent ..;
+			
+			// System options
+			frameLayout -label "System"
+				-collapsable  true 
+				-collapse 0
+				-mh 5
+				sunflowSystemFrame;
+
+				createSunflowSystemFrame( $sunflowGlobals, "sunflowSystemFrame");
+				updateSunflowSystemFrameUI();
+
+			setParent ..;
+			
+
+		setParent ..;
+
+	setParent $parentForm;
+
+	formLayout
+		-edit
+		-af sunflowGlobalsTab "top" 0
+		-af sunflowGlobalsTab "bottom" 0
+		-af sunflowGlobalsTab "left" 0
+		-af sunflowGlobalsTab "right" 0
+		$parentForm;
+
+	// We need to monitor these attributes to warn the user if nothing will be rendered	
+	initializeUI();
+}

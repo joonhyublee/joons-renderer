@@ -1,0 +1,5 @@
+global proc sunflowShutdown(){
+	sunflowDeleteMenu();
+	unregisterSunflowRenderer();
+	print("Sunflow is shutting down!\n");
+}
