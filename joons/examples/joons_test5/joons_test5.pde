@@ -28,11 +28,11 @@ void draw() {
   fill(127);
   jr.fill("glass", 150, 255, 255);
   translate(posX, -10, -100);
-  posX++;
+  if (isRendering) posX++;
   scale(60, 60, 60);
   rotateX(radians(180));
   rotateY(radians(90));
-  battlePod.drawVoxel();
+  battlePod.draw();
   popMatrix();
 
   joonsEndRender();

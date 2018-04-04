@@ -7,6 +7,7 @@ String fileName = "frame";
 String fileType= "png";
 int frameCounter = 0;
 int frameCounterMax = 2;
+boolean isRendering = false;
 
 //camera declarations
 float eyeX = 0;
@@ -31,11 +32,6 @@ void joonsSetup() {
   jr.setCaustics(1); //Set caustics. 1 ~ 100. affects quality of light scattered through glass.
   //jr.setTraceDepth(1,4,4); //Set trace depth, (diffraction, reflection, refraction). Affects glass. (1,4,4) is good.
   //jr.setDOF(170, 5); //Set depth of field of camera, (focus distance, lens radius). Larger radius => more blurry.
-  background(255,0,0);
-  textFont(createFont("Arial", 48));
-  textAlign(CENTER);
-  text("rendering...", width/2, height/2);
-  jr.render();
 }
 
 void joonsBeginRender() {
@@ -68,10 +64,10 @@ void joonsEndRender() {
   
   f1.renameTo(f3);
   
-  if (frameCounter<frameCounterMax) {
-    jr.render();
+  if (isRendering && frameCounter<frameCounterMax) {
     frameCounter++;
-  } else {
+    jr.render();
+  } else if (isRendering) {
     f4.delete();
     f1.delete();
     exit();
