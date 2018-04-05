@@ -100,6 +100,8 @@ void draw() {
 
   jr.endRecord(); //Make sure to end record.
   jr.displayRendered(true); //Display rendered image if rendering completed, and the argument is true.
+  
+  surface.setTitle(""+frameRate);
 }
 
 void keyPressed() {

@@ -36,4 +36,6 @@ void draw() {
   popMatrix();
 
   joonsEndRender();
+  
+  surface.setTitle(""+frameRate);
 }
