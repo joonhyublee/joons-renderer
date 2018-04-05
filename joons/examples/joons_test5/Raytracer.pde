@@ -55,7 +55,7 @@ void joonsEndRender() {
   File f2 = new File(sketchPath(outDir));
   f2.mkdir();
   File f3 = new File(sketchPath(outPath));
-  f3.delete();
+  //f3.delete();
   File f4 = new File(sketchPath(tempPath));
   f4.delete();
     
