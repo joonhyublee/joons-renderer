@@ -1,0 +1,19 @@
+//==================================================================
+// Sunflow Renderer Tab
+//==================================================================
+
+// Description:
+//		Update procedure that is called whenever renderer is changed or
+//		different layer is selected.
+//		Must update any controls whose state may have changed
+//		through another instance of the tab.
+//
+global proc updateSunflowGlobalsTab()
+{
+	//updateSunflowSamplingFrameUI();
+	updateSunflowPhotonFrameUI();
+	updateSunflowGIFrameUI();
+	updateSunflowEnvironmentFrameUI();
+	updateSunflowOverrideFrameUI();
+	updateSunflowSystemFrameUI();
+}

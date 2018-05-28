@@ -1,0 +1,53 @@
+global proc string sunflowGetPrefix() {
+	return "sunflow";
+}
+
+global proc string sunflowCheckGlobals(){	
+	string $sel[]= `ls -sl`;
+	string $globalsNode;
+	string $globalsNodes[] = stringArrayRemove({"<done>"},`lsType sunflowGlobalsNode`);	
+	if(size($globalsNodes)){
+		$globalsNode = $globalsNodes[0];
+		string $unusedNodes[] = stringArrayRemove({$globalsNode},$globalsNodes);
+		if(size($unusedNodes))
+			delete $unusedNodes;
+	}else{
+		$globalsNode = `createNode sunflowGlobalsNode`;
+	}
+	string $projPath = `workspace -q -rd`;
+	string $tmpPath = $projPath+"sunflowScenes/";
+	string $exportPath = `getAttr ($globalsNode+".exportPath")`;
+	if(!`filetest -d $tmpPath`)
+		sysFile -makeDir $tmpPath;
+	if($exportPath=="")
+		setAttr -type "string" ($globalsNode+".exportPath") $tmpPath;
+	select $sel;
+	return $globalsNode;
+}
+
+global proc string[] sunflowCreateSunSky(){
+	string $sunLightShape = `createNode directionalLight`;
+	addAttr -ln "isSunSkyLight" -at bool $sunLightShape;	
+	setAttr ($sunLightShape+".isSunSkyLight") true;
+	string $sunLight[] = `pickWalk -d up`;
+	$sunLight[0] = `rename $sunLight[0] "sunflowSun#"`;
+	setAttr ($sunLight[0]+".rotateX") -45;
+	setAttr ($sunLight[0]+".rotateY") 45;
+	setAttr ($sunLight[0]+".rotateZ") 0;
+	string $sky = sunflowCreateSky($sunLight[0]);	
+	return {$sunLight[0], $sky};
+}
+
+global proc string sunflowCreateSky(string $light){
+	string $lightShape[] = `listRelatives -s $light`;
+	string $skyShape = `createNode sunflowSkyNode`;
+	string $sky[] = `pickWalk -d up`;
+	$sky[0] = `rename $sky[0] "sunflowSky#"`;
+	string $tmp[] = `pickWalk -d down`;$skyShape=$tmp[0];
+	connectAttr -f ($lightShape[0]+".message") ($skyShape+".sunLight");
+	setAttr ($skyShape+".template") 1;
+	setAttr ($skyShape+".size") 0.5;
+	pointConstraint -offset 0 0 0 -weight 1 $light $sky[0];
+	return $skyShape;
+}
+

@@ -1,0 +1,47 @@
+
+global proc AEsunflowHelperNewGroup(string $shadingGroupPlug )
+{
+    createRenderNode -shadersSG ("connectAttr %nodeSG.message "+$shadingGroupPlug) "";
+}
+    
+global proc AEsunflowHelperReplaceGroup( string $shadingGroupPlug, string $dashSource, string $node )
+{
+    connectAttr -f ($node+".message") $shadingGroupPlug;
+}
+
+global proc AEsunflowHelperNodeShaderNew( string $shadingGroupPlug )
+{
+    setUITemplate -pst attributeEditorTemplate;
+	
+    attrNavigationControlGrp -label "Shader" shadingGroupOverride;
+	AEsunflowHelperNodeShaderReplace($shadingGroupPlug);
+}
+
+global proc AEsunflowHelperNodeShaderReplace( string $shadingGroupPlug )
+{
+    attrNavigationControlGrp -edit
+        -attribute $shadingGroupPlug
+		-enable true
+        -createNew ("AEsunflowHelperNewGroup "+$shadingGroupPlug)
+        -connectToExisting ("AEsunflowHelperReplaceGroup "+$shadingGroupPlug)
+        shadingGroupOverride;
+}
+
+global proc AEsunflowHelperNodeTemplate( string $nodeName )
+{	
+	editorTemplate -beginScrollLayout;
+		editorTemplate -l "Type" -addControl "type";
+		editorTemplate -beginLayout "File Mesh Attributes" -collapse 0;
+			editorTemplate -l "File" -addControl "meshPath";
+		editorTemplate -endLayout;
+		editorTemplate -beginLayout "Infinite Plane" -collapse 0;
+			editorTemplate
+				-callCustom "AEsunflowHelperNodeShaderNew"
+				"AEsunflowHelperNodeShaderReplace"
+				"shaderNode";
+		editorTemplate -endLayout;
+	//editorTemplate -addExtraControls;
+	editorTemplate -endScrollLayout;
+}
+
+

@@ -1,0 +1,23 @@
+global proc sunflowCreateMenu(){
+	global string $gMainWindow;
+
+	if ( `menu -exists sunflowMainWindowMenu` ) deleteUI sunflowMainWindowMenu;
+
+	if ( $gMainWindow != "" ){
+		setParent $gMainWindow;
+		menu -label "Sunflow" -tearOff true sunflowMainWindowMenu;			
+			menuItem -label "Helper" -subMenu true;
+				menuItem -label "File Mesh" -command sunflowCreateFileMeshHelper;
+				menuItem -label "Infinite Plane" -command sunflowCreateInfinitePlaneHelper;
+			setParent -menu ..;
+	}
+}
+
+global proc sunflowCreateFileMeshHelper(){
+	createNode sunflowHelperNode -n "sunflowFileMesh#";
+}
+
+global proc sunflowCreateInfinitePlaneHelper(){
+	$infinitePlane = `createNode sunflowHelperNode -n "sunflowInfinitePlane#"`;
+	setAttr ($infinitePlane+".type") 1;
+}
